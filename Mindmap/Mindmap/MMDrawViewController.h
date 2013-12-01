@@ -8,7 +8,11 @@
 
 #import <UIKit/UIKit.h>
 #import "MMPopDrawViewController.h"
+#import "MMCore.h"
 
-@interface MMDrawViewController : UIViewController<PopDrawDelegate>
+@interface MMDrawViewController : UIViewController<PopDrawDelegate, UIScrollViewDelegate>
+
+@property (strong, nonatomic) IBOutlet UIScrollView *mainScrollView;
+@property (strong, nonatomic) IBOutlet MMGraph *mainWorkingView;
 
 @end

@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		04A19129184A3F8800CA8826 /* MMCore.m in Sources */ = {isa = PBXBuildFile; fileRef = 04A19128184A3F8800CA8826 /* MMCore.m */; };
+		04A1912E184AA7F900CA8826 /* nodeImage.png in Resources */ = {isa = PBXBuildFile; fileRef = 04A1912D184AA7F900CA8826 /* nodeImage.png */; };
 		3086B6081840BEC0004056E8 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3086B6071840BEC0004056E8 /* Foundation.framework */; };
 		3086B60A1840BEC0004056E8 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3086B6091840BEC0004056E8 /* CoreGraphics.framework */; };
 		3086B60C1840BEC0004056E8 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3086B60B1840BEC0004056E8 /* UIKit.framework */; };
@@ -39,6 +41,9 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		04A19127184A3F8800CA8826 /* MMCore.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MMCore.h; sourceTree = "<group>"; };
+		04A19128184A3F8800CA8826 /* MMCore.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MMCore.m; sourceTree = "<group>"; };
+		04A1912D184AA7F900CA8826 /* nodeImage.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = nodeImage.png; sourceTree = "<group>"; };
 		3086B6041840BEC0004056E8 /* Mindmap.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Mindmap.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3086B6071840BEC0004056E8 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		3086B6091840BEC0004056E8 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -92,6 +97,17 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		04A1912A184A406B00CA8826 /* MainEditor */ = {
+			isa = PBXGroup;
+			children = (
+				04A19127184A3F8800CA8826 /* MMCore.h */,
+				04A19128184A3F8800CA8826 /* MMCore.m */,
+				3086B6441840CB44004056E8 /* MMDrawViewController.h */,
+				3086B6451840CB44004056E8 /* MMDrawViewController.m */,
+			);
+			name = MainEditor;
+			sourceTree = "<group>";
+		};
 		3086B5FB1840BEC0004056E8 = {
 			isa = PBXGroup;
 			children = (
@@ -125,10 +141,9 @@
 		3086B60D1840BEC0004056E8 /* Mindmap */ = {
 			isa = PBXGroup;
 			children = (
+				04A1912A184A406B00CA8826 /* MainEditor */,
 				3086B6471840E50B004056E8 /* MMPopDrawViewController.h */,
 				3086B6481840E50B004056E8 /* MMPopDrawViewController.m */,
-				3086B6441840CB44004056E8 /* MMDrawViewController.h */,
-				3086B6451840CB44004056E8 /* MMDrawViewController.m */,
 				3086B6161840BEC0004056E8 /* MMAppDelegate.h */,
 				3086B6171840BEC0004056E8 /* MMAppDelegate.m */,
 				3086B61C1840BEC0004056E8 /* Main_iPad.storyboard */,
@@ -137,6 +152,7 @@
 				3086B6221840BEC0004056E8 /* MMDetailViewController.h */,
 				3086B6231840BEC0004056E8 /* MMDetailViewController.m */,
 				3086B6251840BEC0004056E8 /* Images.xcassets */,
+				04A1912D184AA7F900CA8826 /* nodeImage.png */,
 				3086B64A1840E7BB004056E8 /* test.jpg */,
 				3086B6421840C829004056E8 /* mm.tiff */,
 				3086B60E1840BEC0004056E8 /* Supporting Files */,
@@ -255,6 +271,7 @@
 				3086B61E1840BEC0004056E8 /* Main_iPad.storyboard in Resources */,
 				3086B6261840BEC0004056E8 /* Images.xcassets in Resources */,
 				3086B6121840BEC0004056E8 /* InfoPlist.strings in Resources */,
+				04A1912E184AA7F900CA8826 /* nodeImage.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -273,6 +290,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				04A19129184A3F8800CA8826 /* MMCore.m in Sources */,
 				3086B6181840BEC0004056E8 /* MMAppDelegate.m in Sources */,
 				3086B6211840BEC0004056E8 /* MMMasterViewController.m in Sources */,
 				3086B6141840BEC0004056E8 /* main.m in Sources */,
@@ -489,6 +507,7 @@
 				3086B63E1840BEC0004056E8 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		3086B63F1840BEC0004056E8 /* Build configuration list for PBXNativeTarget "MindmapTests" */ = {
 			isa = XCConfigurationList;
@@ -497,6 +516,7 @@
 				3086B6411840BEC0004056E8 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
