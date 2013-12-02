@@ -10,13 +10,16 @@
 
 @protocol MapDrawNodeDelegate;
 
+
 @interface MMNode : UIView {
     CGPoint location;
 }
 
 @property(weak, nonatomic) MMNode* parent;
 @property(strong, nonatomic) NSMutableArray* children;
+@property(strong, nonatomic) NSMutableDictionary* childEdges;
 @property(weak) id<MapDrawNodeDelegate> drawNodeDelegate;
+
 
 +(instancetype) initRootWithPoint:(CGPoint)point AndDelegate:(id)delegate;
 +(instancetype) initWithParent:(MMNode*)parent andPoint:(CGPoint)point;
@@ -28,23 +31,21 @@
 @protocol MapDrawNodeDelegate <NSObject>
 
 -(void)addNode:(MMNode*)node;
--(void)setStartPoint:(CGPoint)point;
--(void)setDestPoint:(CGPoint)point;
--(void)isMoving;
--(void)isStop;
+-(void)setTempLineStart:(CGPoint)Point;
+-(void)drawTempLineTo:(CGPoint)point;
+-(void)drawEdgeWithView:(UIView*)edge;
 
 @end
 
 
 @interface MMGraph : UIView <MapDrawNodeDelegate> {
-    CGPoint start;
-    CGPoint dest;
-    bool isMoving;
+
 }
 
 @property(strong, nonatomic) NSString* mapName;
 @property(strong, nonatomic) MMNode* root;
 
+-(id)initWithCoder:(NSCoder *)aDecoder;
 -(void)setRoot:(MMNode*)root andName:(NSString*)name;
 
 @end

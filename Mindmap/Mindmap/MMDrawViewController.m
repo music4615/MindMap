@@ -42,6 +42,7 @@
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         // Custom initialization
+        
     }
     return self;
 }
@@ -50,11 +51,12 @@
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
-    [self.mainScrollView setMaximumZoomScale:5.0];
+    [self.mainScrollView setMaximumZoomScale:3.0];
     [self.mainScrollView setMinimumZoomScale:1.0];
     [self.mainScrollView setDelegate:self];
     [self.mainScrollView setScrollEnabled:YES];
     // initialize the graph
+    
     MMNode* node = [MMNode initRootWithPoint:self.mainWorkingView.center AndDelegate:self.mainWorkingView];
     [self.mainWorkingView setRoot:node andName:@"test"];
 }
