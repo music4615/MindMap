@@ -10,8 +10,11 @@
 		04A19129184A3F8800CA8826 /* MMCore.m in Sources */ = {isa = PBXBuildFile; fileRef = 04A19128184A3F8800CA8826 /* MMCore.m */; };
 		04A19130184B94E800CA8826 /* nodeImg.png in Resources */ = {isa = PBXBuildFile; fileRef = 04A1912F184B94E800CA8826 /* nodeImg.png */; };
 		04A19132184B99AF00CA8826 /* nodeImage.png in Resources */ = {isa = PBXBuildFile; fileRef = 04A19131184B99AF00CA8826 /* nodeImage.png */; };
+<<<<<<< HEAD
 		3075E656184D857600D1AB13 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3075E655184D857600D1AB13 /* CoreData.framework */; };
 		3075E659184D85BE00D1AB13 /* MMCoreData.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 3075E657184D85BE00D1AB13 /* MMCoreData.xcdatamodeld */; };
+=======
+>>>>>>> 7bd3cefd30d6476047d5bf8ff568a7996db369e9
 		3086B6081840BEC0004056E8 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3086B6071840BEC0004056E8 /* Foundation.framework */; };
 		3086B60A1840BEC0004056E8 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3086B6091840BEC0004056E8 /* CoreGraphics.framework */; };
 		3086B60C1840BEC0004056E8 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3086B60B1840BEC0004056E8 /* UIKit.framework */; };
@@ -60,8 +63,11 @@
 		04A19128184A3F8800CA8826 /* MMCore.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MMCore.m; sourceTree = "<group>"; };
 		04A1912F184B94E800CA8826 /* nodeImg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = nodeImg.png; sourceTree = "<group>"; };
 		04A19131184B99AF00CA8826 /* nodeImage.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = nodeImage.png; sourceTree = "<group>"; };
+<<<<<<< HEAD
 		3075E655184D857600D1AB13 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		3075E658184D85BE00D1AB13 /* MMCoreData.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = MMCoreData.xcdatamodel; sourceTree = "<group>"; };
+=======
+>>>>>>> 7bd3cefd30d6476047d5bf8ff568a7996db369e9
 		3086B6041840BEC0004056E8 /* Mindmap.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Mindmap.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3086B6071840BEC0004056E8 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		3086B6091840BEC0004056E8 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -163,7 +169,10 @@
 		3086B60D1840BEC0004056E8 /* Mindmap */ = {
 			isa = PBXGroup;
 			children = (
+<<<<<<< HEAD
 				3075E657184D85BE00D1AB13 /* MMCoreData.xcdatamodeld */,
+=======
+>>>>>>> 7bd3cefd30d6476047d5bf8ff568a7996db369e9
 				04A1912A184A406B00CA8826 /* MainEditor */,
 				3086B6471840E50B004056E8 /* MMPopDrawViewController.h */,
 				3086B6481840E50B004056E8 /* MMPopDrawViewController.m */,

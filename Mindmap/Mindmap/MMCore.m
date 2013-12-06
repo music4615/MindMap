@@ -95,7 +95,10 @@
     [scrollView setScrollEnabled:NO];
     
     [self.drawNodeDelegate setTempLineStart:self.center];
+<<<<<<< HEAD
     
+=======
+>>>>>>> 7bd3cefd30d6476047d5bf8ff568a7996db369e9
 }
 
 - (void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event {
@@ -165,14 +168,20 @@
         [tempLinePath stroke];
     }
     
+<<<<<<< HEAD
     
+=======
+>>>>>>> 7bd3cefd30d6476047d5bf8ff568a7996db369e9
 }
 
 
 #pragma protocal functions
 -(void)addNode:(MMNode *)node {
     [self addSubview:node];
+<<<<<<< HEAD
 
+=======
+>>>>>>> 7bd3cefd30d6476047d5bf8ff568a7996db369e9
 }
 
 -(void)setTempLineStart:(CGPoint)point {

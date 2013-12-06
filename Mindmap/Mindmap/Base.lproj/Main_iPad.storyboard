@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<<<<<<< HEAD
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="4514" systemVersion="13A603" targetRuntime="iOS.CocoaTouch.iPad" propertyAccessControl="none" initialViewController="H1p-Uh-vWS">
+=======
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="4514" systemVersion="12F45" targetRuntime="iOS.CocoaTouch.iPad" propertyAccessControl="none" initialViewController="H1p-Uh-vWS">
+>>>>>>> 7bd3cefd30d6476047d5bf8ff568a7996db369e9
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3747"/>
     </dependencies>
@@ -88,6 +92,7 @@
         <!--Draw View Controller - draw-->
         <scene sceneID="1mC-iM-oPd">
             <objects>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="ncT-26-Y37" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <viewController title="draw" wantsFullScreenLayout="YES" id="r7Q-OB-0s8" customClass="MMDrawViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="gGW-8N-MHS">
                         <rect key="frame" x="0.0" y="0.0" width="1024" height="768"/>
@@ -143,7 +148,6 @@
                         <outlet property="mainWorkingView" destination="XDv-sH-fj1" id="b2M-1Q-i1F"/>
                     </connections>
                 </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="ncT-26-Y37" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="457" y="227"/>
         </scene>

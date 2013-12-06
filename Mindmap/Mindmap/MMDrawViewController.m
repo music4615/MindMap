@@ -18,6 +18,7 @@
 
 @implementation MMDrawViewController
 
+<<<<<<< HEAD
 // Mia: show the menu to choose color and shape
 #pragma mark - ButtonAction
 - (IBAction)choose_shape:(id)sender
@@ -129,6 +130,8 @@
 
 
 
+=======
+>>>>>>> 7bd3cefd30d6476047d5bf8ff568a7996db369e9
 # pragma pop delegate
 -(void) popover:(MMPopDrawViewController *) popView inputImage:(NSData *) image
 {
@@ -173,6 +176,7 @@
     
     MMNode* node = [MMNode initRootWithPoint:self.mainWorkingView.center AndDelegate:self.mainWorkingView];
     [self.mainWorkingView setRoot:node andName:@"test"];
+<<<<<<< HEAD
     
     
     // Mia: init the actionSheet of shapea and color, and the touching imageView
@@ -236,6 +240,8 @@
         NSLog(@"4");
     }
 
+=======
+>>>>>>> 7bd3cefd30d6476047d5bf8ff568a7996db369e9
 }
 - (void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event {
     /*
@@ -274,6 +280,15 @@
 
 -(BOOL)shouldAutorotate {
     return ([[UIDevice currentDevice] orientation] == UIInterfaceOrientationLandscapeLeft || [[UIDevice currentDevice] orientation] == UIInterfaceOrientationLandscapeRight);
+<<<<<<< HEAD
+}
+
+#pragma scrollDelegate
+
+- (UIView *)viewForZoomingInScrollView:(UIScrollView *)scrollView  {
+    return self.mainWorkingView;
+=======
+>>>>>>> 7bd3cefd30d6476047d5bf8ff568a7996db369e9
 }
 
 #pragma scrollDelegate
@@ -281,5 +296,8 @@
 - (UIView *)viewForZoomingInScrollView:(UIScrollView *)scrollView  {
     return self.mainWorkingView;
 }
+
+# pragma basic operation
+
 
 @end
