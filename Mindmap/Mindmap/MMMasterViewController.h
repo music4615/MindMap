@@ -14,4 +14,8 @@
 
 @property (strong, nonatomic) MMDetailViewController *detailViewController;
 
+@property (strong, nonatomic) NSFetchedResultsController *fetchedResultsController;
+@property (strong, nonatomic) NSManagedObjectContext *managedObjectContext;
+
+
 @end

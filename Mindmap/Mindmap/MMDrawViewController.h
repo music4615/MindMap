@@ -8,7 +8,27 @@
 
 #import <UIKit/UIKit.h>
 #import "MMPopDrawViewController.h"
+#import "MMCore.h"
+#import "MMPickerViewController.h"
 
-@interface MMDrawViewController : UIViewController<PopDrawDelegate>
+@interface MMDrawViewController : UIViewController<PopDrawDelegate, PickerDelegate>
+{
+    UIImageView *touching;
+    UIColor *selectedColor;
+    NSString *selectedShape; 
+    CGPoint start ;
+    NSMutableSet *touchedObjects ;
+}
+
+@property (nonatomic, strong) MMPickerViewController *shapePickerTableView;
+@property (nonatomic, strong) UIPopoverController *shapePickerPopover;
+@property (nonatomic, strong) MMPickerViewController *colorPickerTableView;
+@property (nonatomic, strong) UIPopoverController *colorPickerPopover;
+
+
+
+@property (strong, nonatomic) IBOutlet UIScrollView *mainScrollView;
+@property (strong, nonatomic) IBOutlet MMGraph *mainWorkingView;
+
 
 @end
