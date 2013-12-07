@@ -7,10 +7,11 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "MMDetailViewController.h"
 
 @class MMDetailViewController;
 
-@interface MMMasterViewController : UITableViewController
+@interface MMMasterViewController : UITableViewController<SaveFileDelegateByMaster>
 
 @property (strong, nonatomic) MMDetailViewController *detailViewController;
 

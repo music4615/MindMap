@@ -13,6 +13,7 @@
 @property (weak, nonatomic) IBOutlet UIImageView *imageView;
 - (IBAction)choose_shape:(id)sender;
 - (IBAction)choose_color:(id)sender;
+- (IBAction)get_thumbnail:(id)sender;
 
 @end
 
@@ -68,6 +69,81 @@
         _colorPickerPopover = nil;
         //self.view.userInteractionEnabled = YES ;
     }
+}
+// Mia: get the thumbnail of the screen
+- (IBAction)get_thumbnail:(id)sender {
+    float left = 0 ;
+    float right = 0 ;
+    float top = 0 ;
+    float bottom = 0 ;
+    float counter = 0 ;
+    NSMutableArray *imageSubViews = [[NSMutableArray alloc] init ] ;
+    // to find the most left, top, right, bottom UIImageView
+    for ( UIView *subview in self.view.subviews) {
+        
+        if( [subview isKindOfClass:[UIImageView class]] )
+        {
+            [imageSubViews addObject:subview] ;
+            if( counter == 0 )
+            {
+                left = subview.frame.origin.x;
+                right = subview.frame.origin.x + subview.frame.size.width;
+                top = subview.frame.origin.y;
+                bottom = subview.frame.origin.y + subview.frame.size.height;
+                counter++;
+                continue;
+            }
+            
+            if( subview.frame.origin.x < left )
+            {
+                
+                left = subview.frame.origin.x;
+            }
+            if( subview.frame.origin.x + subview.frame.size.width > right )
+            {
+                //NSLog(@"width %f", subview.frame.origin.x + subview.frame.size.width);
+                right = subview.frame.origin.x + subview.frame.size.width;
+            }
+            if( subview.frame.origin.y < top )
+            {
+                //NSLog(@"y %f", subview.frame.origin.y);
+                top = subview.frame.origin.y;
+            }
+            if( subview.frame.origin.y + subview.frame.size.height > bottom )
+            {
+                //NSLog(@"height %f", subview.frame.origin.y + subview.frame.size.height);
+                bottom = subview.frame.origin.y + subview.frame.size.height;
+            }
+            
+        }
+        
+    }
+    
+    //the action of printing screen
+    UIGraphicsBeginImageContext(self.view.bounds.size);
+    [self.view.layer renderInContext:UIGraphicsGetCurrentContext()];
+    UIImage *screen = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    // crop the image of screen
+    CGRect croppedImageEdge = CGRectMake(left-10, top-10, right-left+20, bottom-top+20);
+    CGImageRef croppedImageRef = CGImageCreateWithImageInRect([screen CGImage], croppedImageEdge);
+    UIImage *thumbnailImage = [UIImage imageWithCGImage:croppedImageRef];
+    UIImageView *thumbnailImageView = [[UIImageView alloc] initWithImage:thumbnailImage];
+    
+    // automatic scale the photo to the size of the frame
+    thumbnailImageView.contentMode = UIViewContentModeScaleAspectFit;
+    thumbnailImageView.frame = CGRectMake(0, 0, 448, 1024); // 448*1024: size of detailViewController
+    
+    // 加上他的border 只是為了測試 可以刪掉
+    [thumbnailImageView.layer setBorderColor: [[UIColor blackColor] CGColor]];
+    [thumbnailImageView.layer setBorderWidth: 2.0];
+    
+    [self.view addSubview:thumbnailImageView] ;
+    NSDictionary *temp = [[NSDictionary alloc] initWithObjectsAndKeys:imageSubViews, @"mainEditor",
+                                                                    thumbnailImageView, @"imageView", nil] ;
+    
+    [self.delegateInDraw recieveData:temp] ;
+
 }
 // Mia: end to choose the menu
 
