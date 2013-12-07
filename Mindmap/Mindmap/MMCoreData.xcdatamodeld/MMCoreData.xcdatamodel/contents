@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="3401" systemVersion="13A603" minimumToolsVersion="Xcode 4.3" macOSVersion="Automatic" iOSVersion="Automatic">
+    <entity name="Contents" syncable="YES"/>
+    <entity name="Figures" syncable="YES">
+        <attribute name="pos_x" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="pos_y" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="type" optional="YES" attributeType="String" syncable="YES"/>
+    </entity>
+    <elements>
+        <element name="Figures" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="Contents" positionX="0" positionY="0" width="0" height="0"/>
+    </elements>
+</model>
