@@ -13,6 +13,7 @@
 @end
 
 @implementation MMPopDrawViewController
+
 - (IBAction)pop_back:(id)sender {
     NSString* path = [[NSBundle mainBundle] pathForResource:@"test" ofType:@"jpg"];
     NSData* image = [NSData dataWithContentsOfFile:path];

@@ -41,7 +41,7 @@
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
-                                    <segue destination="r7Q-OB-0s8" kind="modal" id="ca6-ey-tJR"/>
+                                    <segue destination="r7Q-OB-0s8" kind="modal" identifier="ShowDrawViewController" id="ca6-ey-tJR"/>
                                 </connections>
                             </button>
                         </subviews>
@@ -52,6 +52,7 @@
                     <navigationItem key="navigationItem" title="Detail" id="mOI-FS-AaM"/>
                     <connections>
                         <outlet property="detailDescriptionLabel" destination="0XM-y9-sOw" id="deQ-Na-JPF"/>
+                        <outlet property="thumbnailImageView" destination="eaN-Ly-ZkN" id="97H-Z4-R5p"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="FJe-Yq-33r" sceneMemberID="firstResponder"/>
@@ -100,6 +101,12 @@
                                     <view autoresizesSubviews="NO" clipsSubviews="YES" contentMode="scaleToFill" id="XDv-sH-fj1" customClass="MMGraph">
                                         <rect key="frame" x="0.0" y="0.0" width="1024" height="704"/>
                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                        <subviews>
+                                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" id="bkU-WO-xTy">
+                                                <rect key="frame" x="581" y="542" width="349" height="169"/>
+                                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                            </imageView>
+                                        </subviews>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                     </view>
                                 </subviews>
@@ -130,6 +137,11 @@
                                             <action selector="choose_shape:" destination="r7Q-OB-0s8" id="j0F-Me-QyB"/>
                                         </connections>
                                     </barButtonItem>
+                                    <barButtonItem systemItem="save" id="fAZ-1L-3PW">
+                                        <connections>
+                                            <action selector="get_thumbnail:" destination="r7Q-OB-0s8" id="ErE-Bw-rks"/>
+                                        </connections>
+                                    </barButtonItem>
                                 </items>
                             </toolbar>
                         </subviews>
@@ -139,6 +151,7 @@
                     <nil key="simulatedTopBarMetrics"/>
                     <simulatedOrientationMetrics key="simulatedOrientationMetrics" orientation="landscapeRight"/>
                     <connections>
+                        <outlet property="imageView" destination="bkU-WO-xTy" id="fFZ-AW-lef"/>
                         <outlet property="mainScrollView" destination="SXj-3q-fU5" id="ebt-PF-wLb"/>
                         <outlet property="mainWorkingView" destination="XDv-sH-fj1" id="b2M-1Q-i1F"/>
                     </connections>

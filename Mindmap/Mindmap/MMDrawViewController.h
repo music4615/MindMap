@@ -11,6 +11,11 @@
 #import "MMCore.h"
 #import "MMPickerViewController.h"
 
+@protocol SaveFileDelegateByDetail
+- (void)recieveData:(NSDictionary *)theData ;
+@end
+
+
 @interface MMDrawViewController : UIViewController<PopDrawDelegate, PickerDelegate>
 {
     UIImageView *touching;
@@ -19,7 +24,7 @@
     CGPoint start ;
     NSMutableSet *touchedObjects ;
 }
-
+@property (nonatomic) id<SaveFileDelegateByDetail> delegateInDraw;
 @property (nonatomic, strong) MMPickerViewController *shapePickerTableView;
 @property (nonatomic, strong) UIPopoverController *shapePickerPopover;
 @property (nonatomic, strong) MMPickerViewController *colorPickerTableView;

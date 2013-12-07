@@ -10,15 +10,26 @@
 
 @interface MMDetailViewController ()
 @property (strong, nonatomic) UIPopoverController *masterPopoverController;
+@property (weak, nonatomic) IBOutlet UIButton *thumbnailImageView;
 - (void)configureView;
 @end
 
 @implementation MMDetailViewController
 
+- (void)recieveData:(NSDictionary *)theData {
+    
+    //Do something with data here
+
+    [self.delegateInDetail storeData:theData] ;
+}
+
 #pragma mark - Managing the detail item
 
 - (void)setDetailItem:(id)newDetailItem
 {
+    UIImageView *temp = newDetailItem;
+    [self.thumbnailImageView.imageView setImage:temp.image];
+    /*
     if (_detailItem != newDetailItem) {
         _detailItem = newDetailItem;
         
@@ -28,7 +39,8 @@
 
     if (self.masterPopoverController != nil) {
         [self.masterPopoverController dismissPopoverAnimated:YES];
-    }        
+    }    
+     */
 }
 
 - (void)configureView
@@ -68,5 +80,15 @@
     [self.navigationItem setLeftBarButtonItem:nil animated:YES];
     self.masterPopoverController = nil;
 }
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+{
+    if ([[segue identifier] isEqualToString:@"ShowDrawViewController"]) {
+        MMDrawViewController *draw = [segue destinationViewController];
+        draw.delegateInDraw = self;
+        
+    }
+}
+
+
 
 @end
