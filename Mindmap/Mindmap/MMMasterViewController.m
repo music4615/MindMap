@@ -20,16 +20,19 @@
 //Mia: get the data from detailViewController
 - (void)storeData:(NSDictionary *)theData
 {
-    if( !files)
-    {
-        files = [[NSMutableArray alloc] init] ;
-    }
-    [files insertObject:theData atIndex:0];
-    [self.tableView insertRowsAtIndexPaths:[NSArray arrayWithObject: [NSIndexPath indexPathForRow:0 inSection:0]] withRowAnimation:UITableViewRowAnimationAutomatic];
-//    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:0 inSection:0];
- //   [self.tableView insertRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+    [_objects replaceObjectAtIndex:0 withObject:theData];
+    
 
-    NSLog(@"gg %d", [files count]);
+    /*
+    if( !_objects)
+    {
+        _objects = [[NSMutableArray alloc] init] ;
+    }
+
+    [_objects insertObject:theData atIndex:0];
+    [self.tableView insertRowsAtIndexPaths:[NSArray arrayWithObject: [NSIndexPath indexPathForRow:0 inSection:0]] withRowAnimation:UITableViewRowAnimationAutomatic];
+*/
+
     
 }
 - (void)awakeFromNib
@@ -47,21 +50,19 @@
 	// Do any additional setup after loading the view, typically from a nib.
     self.navigationItem.leftBarButtonItem = self.editButtonItem;
     
-    UIBarButtonItem *addButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(insertNewObject:)];
+    // init the add button
+    UIBarButtonItem *addButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(newAndGotoMain:)];
     self.navigationItem.rightBarButtonItem = addButton;
+    // init MMDetailViewCOntroller
     self.detailViewController = (MMDetailViewController *)[[self.splitViewController.viewControllers lastObject] topViewController];
     
-    // Miaaa
-    [addButton.target performSelector:addButton.action];
-    if( !files)
-    {
-        files = [[NSMutableArray alloc] init];
+    if (!_objects) {
+        _objects = [[NSMutableArray alloc] init];
     }
-    NSString *filePath = [[NSBundle mainBundle] pathForResource:@"test" ofType:@"jpg"];
-    UIImage *im = [[UIImage alloc] initWithContentsOfFile:filePath];
-    UIImageView *img = [[UIImageView alloc] initWithImage:im];
-    NSDictionary *t = [[NSDictionary alloc] initWithObjectsAndKeys:img, @"imageView", nil];
-    [files insertObject:t atIndex:0];
+    
+    
+    // Miaaa
+// [addButton.target performSelector:addButton.action];
     
 }
 
@@ -70,18 +71,56 @@
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
-
-- (void)insertNewObject:(id)sender
+//Mia: 按下add button後 ...
+- (void)newAndGotoMain:(id)sender
 {
-     if (!_objects) {
-         _objects = [[NSMutableArray alloc] init];
-     }
-     [_objects insertObject:[NSDate date] atIndex:0];
-     NSIndexPath *indexPath = [NSIndexPath indexPathForRow:0 inSection:0];
-     [self.tableView insertRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+    // 1. insert a default dictionary into _objects
+    NSString *filePath = [[NSBundle mainBundle] pathForResource:@"test" ofType:@"jpg"];
+    UIImage *defaultThumbnail = [[UIImage alloc] initWithContentsOfFile:filePath];
+    UIImageView *img = [[UIImageView alloc] initWithImage:defaultThumbnail];
+    NSInteger id = [self getNewFileID];
+    NSDictionary *dic = [[NSDictionary alloc] initWithObjectsAndKeys:img, @"thumbnailImageView",
+                                                                    @"defaultFileName", @"title",
+                                                                    id, @"fileID", nil];
+    [_objects insertObject:dic atIndex:0];
     
-}
+    
+    // 2. insert and show in columns
+    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:0 inSection:0];
+    [self.tableView insertRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+    
+    // 3. set delegate to pass the data from mainEditor, and pass the data
+    self.detailViewController.delegateInDetail = self ;
+    self.detailViewController.itemDic = [_objects objectAtIndex:0];
+    
+    // 4. enter the mainEditor
+    [self.detailViewController performSegueWithIdentifier: @"ShowDrawViewController" sender: self];
 
+
+}
+/*
+//Mia: 改成 -- 當要離開mainEditor時，再insert
+- (void)insertNewObject
+{
+    
+    if (!_objects) {
+        _objects = [[NSMutableArray alloc] init];
+    }
+
+    NSString *filePath = [[NSBundle mainBundle] pathForResource:@"nodeImg" ofType:@"png"];
+    UIImage *im = [[UIImage alloc] initWithContentsOfFile:filePath];
+    UIImageView *img = [[UIImageView alloc] initWithImage:im];
+    NSDictionary *dic = [[NSDictionary alloc] initWithObjectsAndKeys:img, @"imageView", nil];
+    [_objects insertObject:dic atIndex:0];
+    
+    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:0 inSection:0];
+    [self.tableView insertRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+    
+    [self.detailViewController setDetailItem:img ];
+    self.detailViewController.delegateInDetail = self ;
+ 
+}
+*/
 #pragma mark - Table View
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -91,15 +130,14 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return files.count;
+    return _objects.count;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"Cell" forIndexPath:indexPath];
-    
-    NSDate *object = _objects[indexPath.row];
-    cell.textLabel.text = [object description];
+    NSString *title = [_objects[indexPath.row] objectForKey:@"title"];
+    cell.textLabel.text = title;
     return cell;
 }
 
@@ -117,6 +155,21 @@
     } else if (editingStyle == UITableViewCellEditingStyleInsert) {
         // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view.
     }
+}
+- (NSInteger) getNewFileID
+{
+    NSInteger biggestID;
+    if( [_objects count])
+    {
+        biggestID = (NSInteger)[[_objects objectAtIndex:0] objectForKey:@"fileID"];
+        biggestID ++ ;
+    }
+    else
+    {
+        biggestID = 0 ;
+    }
+    return biggestID;
+    
 }
 
 /*
@@ -139,8 +192,12 @@
 {
     if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
         // Miaaa
-        UIImageView *tmp = [files[indexPath.row] objectForKey:@"imageView"];
-        [self.detailViewController setDetailItem:tmp ];
+        //UIImageView *tmp = [_objects[indexPath.row] objectForKey:@"thumbnailImageView"];
+        
+        self.detailViewController.itemDic = _objects[indexPath.row];
+
+        [self.detailViewController setThumbnailImageView];
+
         self.detailViewController.delegateInDetail = self ;
         /*
          NSDate *object = _objects[indexPath.row];
@@ -152,14 +209,18 @@
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
+
+/*
     if ([[segue identifier] isEqualToString:@"showDetail"]) {
         
         NSIndexPath *indexPath = [self.tableView indexPathForSelectedRow];
-        NSDate *object = _objects[indexPath.row];
+        NSDictionary *object = _objects[indexPath.row];
         MMDetailViewController *detail = [segue destinationViewController];
-        [detail setDetailItem:object];
-        
+        detail.itemDic = object ;
+//        [detail setDetailItem:object];
     }
+ */
+     
 }
 
 @end

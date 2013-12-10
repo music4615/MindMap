@@ -16,7 +16,9 @@
 
 
 @interface MMDetailViewController : UIViewController <UISplitViewControllerDelegate, SaveFileDelegateByDetail>
+- (void) setThumbnailImageView ;
 @property (strong, nonatomic) id<SaveFileDelegateByMaster> delegateInDetail;
+@property (retain, nonatomic) NSDictionary *itemDic;
 @property (strong, nonatomic) id detailItem;
 @property (weak, nonatomic) IBOutlet UILabel *detailDescriptionLabel;
 @end

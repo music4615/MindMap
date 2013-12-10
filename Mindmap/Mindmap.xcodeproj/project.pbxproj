@@ -31,6 +31,7 @@
 		3086B6461840CB44004056E8 /* MMDrawViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3086B6451840CB44004056E8 /* MMDrawViewController.m */; };
 		3086B6491840E50B004056E8 /* MMPopDrawViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3086B6481840E50B004056E8 /* MMPopDrawViewController.m */; };
 		3086B64B1840E7BB004056E8 /* test.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 3086B64A1840E7BB004056E8 /* test.jpg */; };
+		30A15D7D1856A27000090E07 /* blank.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 30A15D7C1856A27000090E07 /* blank.tiff */; };
 		30C94C7C18502348002135AD /* MMPickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 30C94C7B18502348002135AD /* MMPickerViewController.m */; };
 /* End PBXBuildFile section */
 
@@ -89,6 +90,7 @@
 		3086B6471840E50B004056E8 /* MMPopDrawViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MMPopDrawViewController.h; sourceTree = "<group>"; };
 		3086B6481840E50B004056E8 /* MMPopDrawViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MMPopDrawViewController.m; sourceTree = "<group>"; };
 		3086B64A1840E7BB004056E8 /* test.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = test.jpg; sourceTree = "<group>"; };
+		30A15D7C1856A27000090E07 /* blank.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; name = blank.tiff; path = ../../../../../../Desktop/blank.tiff; sourceTree = "<group>"; };
 		30C94C7A18502348002135AD /* MMPickerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MMPickerViewController.h; sourceTree = "<group>"; };
 		30C94C7B18502348002135AD /* MMPickerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MMPickerViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -163,6 +165,7 @@
 		3086B60D1840BEC0004056E8 /* Mindmap */ = {
 			isa = PBXGroup;
 			children = (
+				30A15D7C1856A27000090E07 /* blank.tiff */,
 				3075E657184D85BE00D1AB13 /* MMCoreData.xcdatamodeld */,
 				04A1912A184A406B00CA8826 /* MainEditor */,
 				3086B6471840E50B004056E8 /* MMPopDrawViewController.h */,
@@ -294,6 +297,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				3086B64B1840E7BB004056E8 /* test.jpg in Resources */,
+				30A15D7D1856A27000090E07 /* blank.tiff in Resources */,
 				3086B6431840C829004056E8 /* mm.tiff in Resources */,
 				3086B61E1840BEC0004056E8 /* Main_iPad.storyboard in Resources */,
 				3086B6261840BEC0004056E8 /* Images.xcassets in Resources */,

@@ -72,77 +72,12 @@
 }
 // Mia: get the thumbnail of the screen
 - (IBAction)get_thumbnail:(id)sender {
-    float left = 0 ;
-    float right = 0 ;
-    float top = 0 ;
-    float bottom = 0 ;
-    float counter = 0 ;
-    NSMutableArray *imageSubViews = [[NSMutableArray alloc] init ] ;
-    // to find the most left, top, right, bottom UIImageView
-    for ( UIView *subview in self.view.subviews) {
-        
-        if( [subview isKindOfClass:[UIImageView class]] )
-        {
-            [imageSubViews addObject:subview] ;
-            if( counter == 0 )
-            {
-                left = subview.frame.origin.x;
-                right = subview.frame.origin.x + subview.frame.size.width;
-                top = subview.frame.origin.y;
-                bottom = subview.frame.origin.y + subview.frame.size.height;
-                counter++;
-                continue;
-            }
-            
-            if( subview.frame.origin.x < left )
-            {
-                
-                left = subview.frame.origin.x;
-            }
-            if( subview.frame.origin.x + subview.frame.size.width > right )
-            {
-                //NSLog(@"width %f", subview.frame.origin.x + subview.frame.size.width);
-                right = subview.frame.origin.x + subview.frame.size.width;
-            }
-            if( subview.frame.origin.y < top )
-            {
-                //NSLog(@"y %f", subview.frame.origin.y);
-                top = subview.frame.origin.y;
-            }
-            if( subview.frame.origin.y + subview.frame.size.height > bottom )
-            {
-                //NSLog(@"height %f", subview.frame.origin.y + subview.frame.size.height);
-                bottom = subview.frame.origin.y + subview.frame.size.height;
-            }
-            
-        }
-        
-    }
+
+    // 1. refresh the file
+    self.thisFile = [self getAFile];
     
-    //the action of printing screen
-    UIGraphicsBeginImageContext(self.view.bounds.size);
-    [self.view.layer renderInContext:UIGraphicsGetCurrentContext()];
-    UIImage *screen = UIGraphicsGetImageFromCurrentImageContext();
-    UIGraphicsEndImageContext();
-    // crop the image of screen
-    CGRect croppedImageEdge = CGRectMake(left-10, top-10, right-left+20, bottom-top+20);
-    CGImageRef croppedImageRef = CGImageCreateWithImageInRect([screen CGImage], croppedImageEdge);
-    UIImage *thumbnailImage = [UIImage imageWithCGImage:croppedImageRef];
-    UIImageView *thumbnailImageView = [[UIImageView alloc] initWithImage:thumbnailImage];
-    
-    // automatic scale the photo to the size of the frame
-    thumbnailImageView.contentMode = UIViewContentModeScaleAspectFit;
-    thumbnailImageView.frame = CGRectMake(0, 0, 448, 1024); // 448*1024: size of detailViewController
-    
-    // 加上他的border 只是為了測試 可以刪掉
-    [thumbnailImageView.layer setBorderColor: [[UIColor blackColor] CGColor]];
-    [thumbnailImageView.layer setBorderWidth: 2.0];
-    
-    [self.view addSubview:thumbnailImageView] ;
-    NSDictionary *temp = [[NSDictionary alloc] initWithObjectsAndKeys:imageSubViews, @"mainEditor",
-                                                                    thumbnailImageView, @"imageView", nil] ;
-    
-    [self.delegateInDraw recieveData:temp] ;
+    // 2. send it back
+    [self.delegateInDraw recieveData:self.thisFile] ;
 
 }
 // Mia: end to choose the menu
@@ -225,6 +160,67 @@
     [self dismissViewControllerAnimated:YES completion:^{}];
 }
 
+// Mia: 取得這的 file 的主題、所有node(nodeImageViews)、縮圖(thumbnailImageView)
+- (NSDictionary*) getAFile
+{
+    float left, right, top, bottom;
+    float counter = 0 ;
+    NSMutableArray *imageSubViews = [[NSMutableArray alloc] init ] ;
+    // 1. get the subViews and the edge imageViews
+    for ( UIView *subview in self.view.subviews) {
+        
+        if( [subview isKindOfClass:[UIImageView class]] )
+        {
+            [imageSubViews addObject:subview] ;
+            if( counter == 0 )
+            {
+                left = subview.frame.origin.x;
+                right = subview.frame.origin.x + subview.frame.size.width;
+                top = subview.frame.origin.y;
+                bottom = subview.frame.origin.y + subview.frame.size.height;
+                counter++;
+                continue;
+            }
+            
+            if( subview.frame.origin.x < left )
+            {   left = subview.frame.origin.x;  }
+            if( subview.frame.origin.x + subview.frame.size.width > right )
+            {   right = subview.frame.origin.x + subview.frame.size.width;  }
+            if( subview.frame.origin.y < top )
+            {   top = subview.frame.origin.y;   }
+            if( subview.frame.origin.y + subview.frame.size.height > bottom )
+            {   bottom = subview.frame.origin.y + subview.frame.size.height;    }
+        }
+    }
+    // 2. get the thumbnail
+        //the action of printing screen
+    UIGraphicsBeginImageContext(self.view.bounds.size);
+    [self.view.layer renderInContext:UIGraphicsGetCurrentContext()];
+    UIImage *screen = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+        // crop the image of screen
+    CGRect croppedImageEdge = CGRectMake(left-10, top-10, right-left+20, bottom-top+20);
+    CGImageRef croppedImageRef = CGImageCreateWithImageInRect([screen CGImage], croppedImageEdge);
+    UIImage *thumbnailImage = [UIImage imageWithCGImage:croppedImageRef];
+    UIImageView *thumbnailImageView = [[UIImageView alloc] initWithImage:thumbnailImage];
+    
+    /*
+    // automatic scale the photo to the size of the frame
+    thumbnailImageView.contentMode = UIViewContentModeScaleAspectFit;
+    thumbnailImageView.frame = CGRectMake(0, 0, 448, 1024); // 448*1024: size of detailViewController
+    */
+    //3. refresh the file
+
+
+    NSMutableDictionary *newFile = [[NSMutableDictionary alloc] init];
+    [newFile addEntriesFromDictionary:self.thisFile];
+    [newFile setObject:imageSubViews forKey:@"nodeImageViews"];
+    [newFile setObject:thumbnailImageView forKey:@"thumbnailImageView"];
+    [newFile setObject:@"testForThumbnail" forKey:@"title"];
+    return newFile;
+
+}
+
 
 # pragma some setting
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
@@ -249,7 +245,15 @@
     
     MMNode* node = [MMNode initRootWithPoint:self.mainWorkingView.center AndDelegate:self.mainWorkingView];
     [self.mainWorkingView setRoot:node andName:@"test"];
-    
+    NSMutableArray *views = [self.thisFile objectForKey:@"nodeImageViews"] ;
+    if( [views count] )
+    {
+        for (UIImageView *view in views) {
+            [self.view addSubview:view];
+        }
+    }
+    else
+    {
     
     // Mia: init the actionSheet of shapea and color, and the touching imageView
     touching = [UIImageView alloc];
@@ -263,6 +267,8 @@
     point = CGPointMake(400, 200);
     [self drawShape:@"Rectangle" andPoint:point] ;
     // Mia: end test
+    }
+
 }
 
 -(void) drawShape: (NSString *)shape andPoint:(CGPoint)position

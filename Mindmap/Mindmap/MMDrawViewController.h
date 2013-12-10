@@ -24,7 +24,9 @@
     CGPoint start ;
     NSMutableSet *touchedObjects ;
 }
+@property (nonatomic) NSDictionary* thisFile;
 @property (nonatomic) id<SaveFileDelegateByDetail> delegateInDraw;
+
 @property (nonatomic, strong) MMPickerViewController *shapePickerTableView;
 @property (nonatomic, strong) UIPopoverController *shapePickerPopover;
 @property (nonatomic, strong) MMPickerViewController *colorPickerTableView;

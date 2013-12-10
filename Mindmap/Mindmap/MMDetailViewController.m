@@ -16,6 +16,13 @@
 
 @implementation MMDetailViewController
 
+
+// Mia: 設定呈現的縮圖
+- (void) setThumbnailImageView
+{
+    UIImageView *temp = [self.itemDic objectForKey:@"thumbnailImageView"] ;
+    [self.thumbnailImageView.imageView setImage:temp.image] ;
+}
 - (void)recieveData:(NSDictionary *)theData {
     
     //Do something with data here
@@ -25,11 +32,19 @@
 
 #pragma mark - Managing the detail item
 
-- (void)setDetailItem:(id)newDetailItem
+- (void)setDetailItem:(UIImageView*) newDetailItem
 {
+    
+/*
+    self.detailItem = newDetailItem;
+    NSLog(@"%d", [self.detailItem count]);
+    
     UIImageView *temp = newDetailItem;
     [self.thumbnailImageView.imageView setImage:temp.image];
-    /*
+    self.thumbnailImageView.imageView.contentMode = UIViewContentModeScaleAspectFit;
+
+
+    
     if (_detailItem != newDetailItem) {
         _detailItem = newDetailItem;
         
@@ -40,16 +55,25 @@
     if (self.masterPopoverController != nil) {
         [self.masterPopoverController dismissPopoverAnimated:YES];
     }    
-     */
+    */
 }
 
 - (void)configureView
 {
-    // Update the user interface for the detail item.
+    if (self.itemDic) {
+        UIImageView *temp = [self.itemDic objectForKey:@"thumbnailImageView"];
+        if( temp )
+        {NSLog(@"should be hereee");}
+        [self.thumbnailImageView.imageView setImage:temp.image];
+        self.thumbnailImageView.imageView.contentMode = UIViewContentModeScaleAspectFit;
 
-    if (self.detailItem) {
+    }
+    // Update the user interface for the detail item.
+    /*
+    if (detailItem) {
         self.detailDescriptionLabel.text = [self.detailItem description];
     }
+     */
 }
 
 - (void)viewDidLoad
@@ -57,6 +81,7 @@
     [super viewDidLoad];
 	// Do any additional setup after loading the view, typically from a nib.
     [self configureView];
+    
 }
 
 - (void)didReceiveMemoryWarning
@@ -85,6 +110,7 @@
     if ([[segue identifier] isEqualToString:@"ShowDrawViewController"]) {
         MMDrawViewController *draw = [segue destinationViewController];
         draw.delegateInDraw = self;
+        draw.thisFile = self.itemDic ;
         
     }
 }
