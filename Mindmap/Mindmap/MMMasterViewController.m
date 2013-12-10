@@ -78,10 +78,9 @@
     NSString *filePath = [[NSBundle mainBundle] pathForResource:@"test" ofType:@"jpg"];
     UIImage *defaultThumbnail = [[UIImage alloc] initWithContentsOfFile:filePath];
     UIImageView *img = [[UIImageView alloc] initWithImage:defaultThumbnail];
-    NSInteger id = [self getNewFileID];
+
     NSDictionary *dic = [[NSDictionary alloc] initWithObjectsAndKeys:img, @"thumbnailImageView",
-                                                                    @"defaultFileName", @"title",
-                                                                    id, @"fileID", nil];
+                                                                    @"defaultFileName", @"title", nil];
     [_objects insertObject:dic atIndex:0];
     
     

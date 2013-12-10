@@ -67,13 +67,8 @@
         [self.thumbnailImageView.imageView setImage:temp.image];
         self.thumbnailImageView.imageView.contentMode = UIViewContentModeScaleAspectFit;
 
+
     }
-    // Update the user interface for the detail item.
-    /*
-    if (detailItem) {
-        self.detailDescriptionLabel.text = [self.detailItem description];
-    }
-     */
 }
 
 - (void)viewDidLoad
