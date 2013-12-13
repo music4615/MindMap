@@ -12,7 +12,7 @@
 
 
 @interface MMNode : UIView {
-    CGPoint location;
+    //CGPoint location;
 }
 
 @property(weak, nonatomic) MMNode* parent;
@@ -44,6 +44,7 @@
 
 @property(strong, nonatomic) NSString* mapName;
 @property(strong, nonatomic) MMNode* root;
+@property(weak, nonatomic) MMNode* selectedNode;
 
 -(id)initWithCoder:(NSCoder *)aDecoder;
 -(void)setRoot:(MMNode*)root andName:(NSString*)name;

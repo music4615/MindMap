@@ -10,15 +10,42 @@
 
 @interface MMDrawViewController ()
 
-@property (weak, nonatomic) IBOutlet UIImageView *imageView;
 @end
 
 @implementation MMDrawViewController
 
 # pragma pop delegate
--(void) popover:(MMPopDrawViewController *) popView inputImage:(NSData *) image
+-(void) popover:(MMPopDrawViewController *) popView inputImage:(UIImage*) image
 {
-    self.imageView.image = [UIImage imageWithData:image];
+    UIImageView* imView = [[UIImageView alloc] initWithImage:image];
+    [imView setTransform:CGAffineTransformScale(CGAffineTransformIdentity, 0.1, 0.1)];
+    [self.mainWorkingView.selectedNode addSubview:imView];
+    [self.drawPopoverController dismissPopoverAnimated:YES];
+    self.drawPopoverController = nil;
+}
+
+-(BOOL) popoverControllerShouldDismissPopover:(UIPopoverController *)popoverController {
+    
+    
+    return YES;
+}
+
+-(void) popoverControllerDidDismissPopover:(UIPopoverController *)popoverController {
+    self.drawPopoverController = nil;
+}
+
+- (IBAction)popoverButtonTouched:(id)sender {
+    if (self.drawPopoverController) {
+        // dismiss popover
+        [self.drawPopoverController dismissPopoverAnimated:YES];
+        self.drawPopoverController = nil;
+    }
+    else {
+        if (self.mainWorkingView.selectedNode) {
+            [self performSegueWithIdentifier:@"PopDraw" sender:self];
+        }
+        
+    }
 }
 
 -(void) prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
@@ -26,6 +53,11 @@
     if ([segue.identifier isEqualToString:@"PopDraw"]) {
         MMPopDrawViewController *pop = segue.destinationViewController;
         pop.popDelegate = self;
+        
+        if ([segue isKindOfClass:[UIStoryboardPopoverSegue class]]) {
+            self.drawPopoverController = [(UIStoryboardPopoverSegue*)segue popoverController];
+            [self.drawPopoverController setDelegate:self];
+        }
     }
     
 }
@@ -42,6 +74,7 @@
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         // Custom initialization
+        self.drawPopoverController = nil;
         
     }
     return self;
@@ -55,6 +88,7 @@
     [self.mainScrollView setMinimumZoomScale:1.0];
     [self.mainScrollView setDelegate:self];
     [self.mainScrollView setScrollEnabled:YES];
+    
     // initialize the graph
     
     MMNode* node = [MMNode initRootWithPoint:self.mainWorkingView.center AndDelegate:self.mainWorkingView];
@@ -78,6 +112,12 @@
 }
 
 # pragma basic operation
+- (IBAction)deleteSelectedNode:(id)sender {
+    if (self.mainWorkingView.selectedNode != self.mainWorkingView.root) {
+        [self.mainWorkingView.selectedNode deleteNode];
+        self.mainWorkingView.selectedNode = nil;
+    }
+}
 
 
 @end

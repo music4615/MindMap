@@ -10,10 +10,10 @@
 #import "MMPopDrawViewController.h"
 #import "MMCore.h"
 
-@interface MMDrawViewController : UIViewController<PopDrawDelegate, UIScrollViewDelegate>
+@interface MMDrawViewController : UIViewController<PopDrawDelegate,UIPopoverControllerDelegate, UIScrollViewDelegate>
 
 @property (strong, nonatomic) IBOutlet UIScrollView *mainScrollView;
 @property (strong, nonatomic) IBOutlet MMGraph *mainWorkingView;
-
+@property (strong, nonatomic) UIPopoverController* drawPopoverController;
 
 @end

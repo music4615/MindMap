@@ -63,23 +63,46 @@
             <objects>
                 <viewController id="13h-pu-vVi" customClass="MMPopDrawViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="YvL-nV-gsE">
-                        <rect key="frame" x="0.0" y="0.0" width="1024" height="768"/>
+                        <rect key="frame" x="0.0" y="0.0" width="703" height="768"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="8N4-ba-1YJ">
-                                <rect key="frame" x="361" y="567" width="46" height="30"/>
+                                <rect key="frame" x="178" y="641" width="92" height="60"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" title="Button">
+                                <fontDescription key="fontDescription" type="system" pointSize="24"/>
+                                <state key="normal" title="DONE">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
-                                    <action selector="pop_back:" destination="13h-pu-vVi" eventType="touchUpInside" id="WEy-oF-aDd"/>
+                                    <action selector="doneButtonClicked:" destination="13h-pu-vVi" eventType="touchUpInside" id="mrj-dW-H5P"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="3yJ-O9-djl">
+                                <rect key="frame" x="428" y="641" width="96" height="60"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="24"/>
+                                <state key="normal" title="Cancel">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="cancelButtonClicked:" destination="13h-pu-vVi" eventType="touchUpInside" id="iPA-TD-fqm"/>
+                                </connections>
+                            </button>
+                            <view contentMode="scaleToFill" id="OII-ue-iFV" customClass="MMHandDrawView">
+                                <rect key="frame" x="20" y="47" width="663" height="586"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <simulatedOrientationMetrics key="simulatedOrientationMetrics" orientation="landscapeRight"/>
                     </view>
-                    <simulatedOrientationMetrics key="simulatedOrientationMetrics"/>
+                    <value key="contentSizeForViewInPopover" type="size" width="703" height="708"/>
+                    <simulatedOrientationMetrics key="simulatedOrientationMetrics" orientation="landscapeRight"/>
+                    <splitViewDetailSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+                    <connections>
+                        <outlet property="drawView" destination="OII-ue-iFV" id="cgR-bw-gyF"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="zSa-My-QZl" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -88,7 +111,6 @@
         <!--Draw View Controller - draw-->
         <scene sceneID="1mC-iM-oPd">
             <objects>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="ncT-26-Y37" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <viewController title="draw" wantsFullScreenLayout="YES" id="r7Q-OB-0s8" customClass="MMDrawViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="gGW-8N-MHS">
                         <rect key="frame" x="0.0" y="0.0" width="1024" height="768"/>
@@ -116,9 +138,15 @@
                                     </barButtonItem>
                                     <barButtonItem systemItem="compose" id="DvO-Hb-d8O">
                                         <connections>
+                                            <action selector="popoverButtonTouched:" destination="r7Q-OB-0s8" id="JiW-nj-mzc"/>
                                             <segue destination="13h-pu-vVi" kind="popover" identifier="PopDraw" popoverAnchorBarButtonItem="DvO-Hb-d8O" id="udV-Ub-bgi">
                                                 <popoverArrowDirection key="popoverArrowDirection" up="YES" down="YES" left="YES" right="YES"/>
                                             </segue>
+                                        </connections>
+                                    </barButtonItem>
+                                    <barButtonItem systemItem="trash" id="Tbg-ec-8M2">
+                                        <connections>
+                                            <action selector="deleteSelectedNode:" destination="r7Q-OB-0s8" id="N1Z-dQ-Dl1"/>
                                         </connections>
                                     </barButtonItem>
                                 </items>
@@ -134,6 +162,7 @@
                         <outlet property="mainWorkingView" destination="XDv-sH-fj1" id="b2M-1Q-i1F"/>
                     </connections>
                 </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="ncT-26-Y37" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="457" y="227"/>
         </scene>
