@@ -66,7 +66,6 @@
     node.childEdges = [NSMutableDictionary dictionary];
     node.drawNodeDelegate = parent.drawNodeDelegate;
     node.selectedColor = parent.selectedColor;
-<<<<<<< HEAD
     
     CGSize size = CGSizeMake(100.f, 100.f);
     UIGraphicsBeginImageContextWithOptions(size, NO, 0.f);
@@ -79,20 +78,6 @@
     UIGraphicsEndImageContext();
     UIImageView *nodeImageView = [[UIImageView alloc] initWithImage:result ];
     
-=======
-    
-    CGSize size = CGSizeMake(100.f, 100.f);
-    UIGraphicsBeginImageContextWithOptions(size, NO, 0.f);
-    CGContextRef context = UIGraphicsGetCurrentContext();
-    //UIColor *color = [[UIColor alloc] initWithRed:.5f green:.6f
-                                             //blue:.7f alpha:1.f];
-    CGContextSetFillColorWithColor(context, node.selectedColor.CGColor);
-    CGContextFillRect(context, (CGRect){.origin=CGPointZero, .size=size});
-    UIImage *result = UIGraphicsGetImageFromCurrentImageContext();
-    UIGraphicsEndImageContext();
-    UIImageView *nodeImageView = [[UIImageView alloc] initWithImage:result ];
-    
->>>>>>> ca03293ac396f7ef9adaa65e582bdf840fdaa4b7
     nodeImageView.userInteractionEnabled = YES;
     // set node images
     CGSize imageSize = nodeImageView.frame.size;
@@ -105,10 +90,6 @@
     return node;
 }
 
-<<<<<<< HEAD
-=======
-
->>>>>>> ca03293ac396f7ef9adaa65e582bdf840fdaa4b7
 -(void) setGestures {
     UITapGestureRecognizer *tapRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(respondToTapGuesture:)];
     tapRecognizer.numberOfTapsRequired = 1;
@@ -316,15 +297,6 @@
 -(void)drawEdgeWithView:(UIView*)edge {
     [self addSubview:edge];
     [self sendSubviewToBack:edge];
-}
-
-- (void) drawFromNodes:(NSMutableArray*) nodes
-{
-    NSLog(@"test to come drawFromNodes");
-    
-     for (MMNode *node in nodes) {
-         [self addSubview:node];
-     }
 }
 
 @end

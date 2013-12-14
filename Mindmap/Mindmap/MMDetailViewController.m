@@ -98,10 +98,6 @@
         MMDrawViewController *draw = [segue destinationViewController];
         draw.delegateInDraw = self;
         draw.thisFile = self.itemDic ;
-<<<<<<< HEAD
-=======
-        NSLog(@"%@", [self.itemDic objectForKey:@"nodeImageViews"]);
->>>>>>> ca03293ac396f7ef9adaa65e582bdf840fdaa4b7
         
     }
 }
