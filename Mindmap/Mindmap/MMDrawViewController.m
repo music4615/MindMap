@@ -35,14 +35,17 @@
 }
 
 - (IBAction)popoverButtonTouched:(id)sender {
+    NSLog(@"touched%@", self.drawPopoverController);
     if (self.drawPopoverController) {
         // dismiss popover
         [self.drawPopoverController dismissPopoverAnimated:YES];
         self.drawPopoverController = nil;
+        NSLog(@"pop");
     }
     else {
         if (self.mainWorkingView.selectedNode) {
             [self performSegueWithIdentifier:@"PopDraw" sender:self];
+            
         }
         
     }
@@ -56,6 +59,7 @@
         
         if ([segue isKindOfClass:[UIStoryboardPopoverSegue class]]) {
             self.drawPopoverController = [(UIStoryboardPopoverSegue*)segue popoverController];
+            NSLog(@"seque");
             [self.drawPopoverController setDelegate:self];
         }
     }

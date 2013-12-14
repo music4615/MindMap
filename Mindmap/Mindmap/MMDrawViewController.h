@@ -16,4 +16,6 @@
 @property (strong, nonatomic) IBOutlet MMGraph *mainWorkingView;
 @property (strong, nonatomic) UIPopoverController* drawPopoverController;
 
+-(IBAction)popoverButtonTouched:(id)sender;
+
 @end

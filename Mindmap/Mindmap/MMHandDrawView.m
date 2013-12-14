@@ -32,7 +32,7 @@
 }
 
 -(UIImage*) getImage {
-    UIImage* image = UIGraphicsGetImageFromCurrentImageContext();
+    UIImage* image = nil;// UIGraphicsGetImageFromCurrentImageContext();
     
     return image;
 }

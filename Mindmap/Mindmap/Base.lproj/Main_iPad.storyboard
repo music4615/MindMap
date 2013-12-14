@@ -106,7 +106,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="zSa-My-QZl" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1598" y="977"/>
+            <point key="canvasLocation" x="1673" y="432"/>
         </scene>
         <!--Draw View Controller - draw-->
         <scene sceneID="1mC-iM-oPd">
@@ -139,9 +139,6 @@
                                     <barButtonItem systemItem="compose" id="DvO-Hb-d8O">
                                         <connections>
                                             <action selector="popoverButtonTouched:" destination="r7Q-OB-0s8" id="JiW-nj-mzc"/>
-                                            <segue destination="13h-pu-vVi" kind="popover" identifier="PopDraw" popoverAnchorBarButtonItem="DvO-Hb-d8O" id="udV-Ub-bgi">
-                                                <popoverArrowDirection key="popoverArrowDirection" up="YES" down="YES" left="YES" right="YES"/>
-                                            </segue>
                                         </connections>
                                     </barButtonItem>
                                     <barButtonItem systemItem="trash" id="Tbg-ec-8M2">
@@ -160,11 +157,14 @@
                     <connections>
                         <outlet property="mainScrollView" destination="SXj-3q-fU5" id="ebt-PF-wLb"/>
                         <outlet property="mainWorkingView" destination="XDv-sH-fj1" id="b2M-1Q-i1F"/>
+                        <segue destination="13h-pu-vVi" kind="popover" identifier="PopDraw" popoverAnchorBarButtonItem="DvO-Hb-d8O" id="prF-CR-qmA">
+                            <popoverArrowDirection key="popoverArrowDirection" up="YES" down="YES" left="YES" right="YES"/>
+                        </segue>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ncT-26-Y37" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="457" y="227"/>
+            <point key="canvasLocation" x="484" y="225"/>
         </scene>
         <!--Split View Controller-->
         <scene sceneID="Nki-YV-4Qg">

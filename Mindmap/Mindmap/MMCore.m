@@ -75,7 +75,7 @@
         [self addGestureRecognizer:doublePan];
         
         [doublePan requireGestureRecognizerToFail:tapRecognizer];
-        [singlePan requireGestureRecognizerToFail:doublePan];
+        [singlePan requireGestureRecognizerToFail:tapRecognizer];
     }
     
     //set order between guestures
@@ -136,7 +136,7 @@
 -(IBAction)respondToTapGuesture:(UITapGestureRecognizer*)recognizer {
     ((MMGraph*)(self.superview)).selectedNode.backgroundColor = [UIColor clearColor];
     ((MMGraph*)(self.superview)).selectedNode = self;
-    self.backgroundColor = [UIColor blueColor];
+    [self.layer setBorderColor:[UIColor blueColor].CGColor];
     [self setNeedsDisplay];
     
     //move to center
@@ -153,6 +153,7 @@
     else if ([recognizer state] == UIGestureRecognizerStateChanged) {
         CGPoint point = [recognizer locationInView:self.superview];
         [self.drawNodeDelegate drawTempLineTo:point];
+        //NSLog(@"changed");
     }
     else if ([recognizer state] == UIGestureRecognizerStateEnded) {
         
@@ -237,7 +238,7 @@
 #pragma protocal functions
 -(void)addNode:(MMNode *)node {
     [_tempLinePath removeAllPoints];
-    _isTempLine = NO;
+    //_isTempLine = NO;
     [self setNeedsDisplay];
     if (node)
         [self addSubview:node];
