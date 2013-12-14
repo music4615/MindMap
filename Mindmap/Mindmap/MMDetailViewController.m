@@ -9,20 +9,27 @@
 #import "MMDetailViewController.h"
 
 @interface MMDetailViewController ()
-@property (strong, nonatomic) UIPopoverController *masterPopoverController;
 @property (weak, nonatomic) IBOutlet UIButton *thumbnailImageView;
+@property (strong, nonatomic) UIPopoverController *masterPopoverController;
 - (void)configureView;
 @end
 
 @implementation MMDetailViewController
 
+#pragma mark - Managing the detail item
 
-// Mia: 設定呈現的縮圖
 - (void) setThumbnailImageView
 {
-    UIImageView *temp = [self.itemDic objectForKey:@"thumbnailImageView"] ;
-    [self.thumbnailImageView.imageView setImage:temp.image] ;
+    if (self.itemDic) {
+        UIImageView *temp = [self.itemDic objectForKey:@"thumbnailImageView"];
+        
+        [self.thumbnailImageView.imageView setImage:temp.image];
+
+        self.thumbnailImageView.imageView.contentMode = UIViewContentModeScaleAspectFit;
+        
+    }
 }
+
 - (void)recieveData:(NSDictionary *)theData {
     
     //Do something with data here
@@ -30,21 +37,10 @@
     [self.delegateInDetail storeData:theData] ;
 }
 
-#pragma mark - Managing the detail item
 
-- (void)setDetailItem:(UIImageView*) newDetailItem
+- (void)setDetailItem:(id)newDetailItem
 {
-    
-/*
-    self.detailItem = newDetailItem;
-    NSLog(@"%d", [self.detailItem count]);
-    
-    UIImageView *temp = newDetailItem;
-    [self.thumbnailImageView.imageView setImage:temp.image];
-    self.thumbnailImageView.imageView.contentMode = UIViewContentModeScaleAspectFit;
-
-
-    
+    /*
     if (_detailItem != newDetailItem) {
         _detailItem = newDetailItem;
         
@@ -54,20 +50,16 @@
 
     if (self.masterPopoverController != nil) {
         [self.masterPopoverController dismissPopoverAnimated:YES];
-    }    
-    */
+    }        
+     */
 }
 
 - (void)configureView
 {
-    if (self.itemDic) {
-        UIImageView *temp = [self.itemDic objectForKey:@"thumbnailImageView"];
-        if( temp )
-        {NSLog(@"should be hereee");}
-        [self.thumbnailImageView.imageView setImage:temp.image];
-        self.thumbnailImageView.imageView.contentMode = UIViewContentModeScaleAspectFit;
+    // Update the user interface for the detail item.
 
-
+    if (self.detailItem) {
+        self.detailDescriptionLabel.text = [self.detailItem description];
     }
 }
 
@@ -76,7 +68,6 @@
     [super viewDidLoad];
 	// Do any additional setup after loading the view, typically from a nib.
     [self configureView];
-    
 }
 
 - (void)didReceiveMemoryWarning
@@ -100,16 +91,17 @@
     [self.navigationItem setLeftBarButtonItem:nil animated:YES];
     self.masterPopoverController = nil;
 }
+
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
     if ([[segue identifier] isEqualToString:@"ShowDrawViewController"]) {
         MMDrawViewController *draw = [segue destinationViewController];
         draw.delegateInDraw = self;
         draw.thisFile = self.itemDic ;
+        NSLog(@"%@", [self.itemDic objectForKey:@"nodeImageViews"]);
         
     }
 }
-
 
 
 @end

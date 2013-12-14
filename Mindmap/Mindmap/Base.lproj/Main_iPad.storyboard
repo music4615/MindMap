@@ -35,7 +35,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="eaN-Ly-ZkN">
-                                <rect key="frame" x="1" y="67" width="702" height="701"/>
+                                <rect key="frame" x="20" y="87" width="663" height="661"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" title="Button" image="mm.tiff">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
@@ -52,35 +52,58 @@
                     <navigationItem key="navigationItem" title="Detail" id="mOI-FS-AaM"/>
                     <connections>
                         <outlet property="detailDescriptionLabel" destination="0XM-y9-sOw" id="deQ-Na-JPF"/>
-                        <outlet property="thumbnailImageView" destination="eaN-Ly-ZkN" id="97H-Z4-R5p"/>
+                        <outlet property="thumbnailImageView" destination="eaN-Ly-ZkN" id="yYj-Zu-vQO"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="FJe-Yq-33r" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-828" y="820"/>
+            <point key="canvasLocation" x="-578" y="870"/>
         </scene>
         <!--Pop Draw View Controller-->
         <scene sceneID="2o1-ob-TNY">
             <objects>
                 <viewController id="13h-pu-vVi" customClass="MMPopDrawViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="YvL-nV-gsE">
-                        <rect key="frame" x="0.0" y="0.0" width="1024" height="768"/>
+                        <rect key="frame" x="0.0" y="0.0" width="703" height="768"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="8N4-ba-1YJ">
-                                <rect key="frame" x="361" y="567" width="46" height="30"/>
+                                <rect key="frame" x="178" y="641" width="92" height="60"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" title="Button">
+                                <fontDescription key="fontDescription" type="system" pointSize="24"/>
+                                <state key="normal" title="DONE">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
-                                    <action selector="pop_back:" destination="13h-pu-vVi" eventType="touchUpInside" id="WEy-oF-aDd"/>
+                                    <action selector="doneButtonClicked:" destination="13h-pu-vVi" eventType="touchUpInside" id="mrj-dW-H5P"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="3yJ-O9-djl">
+                                <rect key="frame" x="428" y="641" width="96" height="60"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="24"/>
+                                <state key="normal" title="Cancel">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="cancelButtonClicked:" destination="13h-pu-vVi" eventType="touchUpInside" id="iPA-TD-fqm"/>
+                                </connections>
+                            </button>
+                            <view contentMode="scaleToFill" id="OII-ue-iFV" customClass="MMHandDrawView">
+                                <rect key="frame" x="20" y="47" width="663" height="586"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <simulatedOrientationMetrics key="simulatedOrientationMetrics" orientation="landscapeRight"/>
                     </view>
-                    <simulatedOrientationMetrics key="simulatedOrientationMetrics"/>
+                    <value key="contentSizeForViewInPopover" type="size" width="703" height="708"/>
+                    <simulatedOrientationMetrics key="simulatedOrientationMetrics" orientation="landscapeRight"/>
+                    <splitViewDetailSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+                    <connections>
+                        <outlet property="drawView" destination="OII-ue-iFV" id="cgR-bw-gyF"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="zSa-My-QZl" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -101,12 +124,6 @@
                                     <view autoresizesSubviews="NO" clipsSubviews="YES" contentMode="scaleToFill" id="XDv-sH-fj1" customClass="MMGraph">
                                         <rect key="frame" x="0.0" y="0.0" width="1024" height="704"/>
                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                                        <subviews>
-                                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" id="bkU-WO-xTy">
-                                                <rect key="frame" x="581" y="542" width="349" height="169"/>
-                                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                                            </imageView>
-                                        </subviews>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                     </view>
                                 </subviews>
@@ -122,24 +139,26 @@
                                     </barButtonItem>
                                     <barButtonItem systemItem="compose" id="DvO-Hb-d8O">
                                         <connections>
+                                            <action selector="popoverButtonTouched:" destination="r7Q-OB-0s8" id="JiW-nj-mzc"/>
                                             <segue destination="13h-pu-vVi" kind="popover" identifier="PopDraw" popoverAnchorBarButtonItem="DvO-Hb-d8O" id="udV-Ub-bgi">
                                                 <popoverArrowDirection key="popoverArrowDirection" up="YES" down="YES" left="YES" right="YES"/>
                                             </segue>
                                         </connections>
                                     </barButtonItem>
-                                    <barButtonItem title="Color" id="h8m-I3-3OQ">
+                                    <barButtonItem systemItem="trash" id="Tbg-ec-8M2">
                                         <connections>
-                                            <action selector="choose_color:" destination="r7Q-OB-0s8" id="zbb-tW-jBf"/>
+                                            <action selector="deleteSelectedNode:" destination="r7Q-OB-0s8" id="N1Z-dQ-Dl1"/>
                                         </connections>
                                     </barButtonItem>
-                                    <barButtonItem title="Shape" id="rGZ-q6-ebx">
+                                    <barButtonItem title="Color" id="rmW-q0-gDi">
                                         <connections>
-                                            <action selector="choose_shape:" destination="r7Q-OB-0s8" id="j0F-Me-QyB"/>
+                                            <action selector="changeColor:" destination="r7Q-OB-0s8" id="0kp-m8-XjO"/>
                                         </connections>
                                     </barButtonItem>
-                                    <barButtonItem systemItem="save" id="fAZ-1L-3PW">
+                                    <barButtonItem title="Shape" id="UIl-jE-9jm"/>
+                                    <barButtonItem title="Save" id="hzu-iv-t01">
                                         <connections>
-                                            <action selector="get_thumbnail:" destination="r7Q-OB-0s8" id="ErE-Bw-rks"/>
+                                            <action selector="save:" destination="r7Q-OB-0s8" id="TgJ-gX-3IB"/>
                                         </connections>
                                     </barButtonItem>
                                 </items>
@@ -148,11 +167,9 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <simulatedOrientationMetrics key="simulatedOrientationMetrics" orientation="landscapeRight"/>
                     </view>
-                    <navigationItem key="navigationItem" id="6cp-Q8-y7p"/>
                     <nil key="simulatedTopBarMetrics"/>
                     <simulatedOrientationMetrics key="simulatedOrientationMetrics" orientation="landscapeRight"/>
                     <connections>
-                        <outlet property="imageView" destination="bkU-WO-xTy" id="fFZ-AW-lef"/>
                         <outlet property="mainScrollView" destination="SXj-3q-fU5" id="ebt-PF-wLb"/>
                         <outlet property="mainWorkingView" destination="XDv-sH-fj1" id="b2M-1Q-i1F"/>
                     </connections>

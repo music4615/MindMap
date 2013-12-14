@@ -12,29 +12,47 @@
 
 @interface MMMasterViewController () {
     NSMutableArray *_objects;
-    NSMutableArray *files;
 }
 @end
 
 @implementation MMMasterViewController
-//Mia: get the data from detailViewController
+// update
 - (void)storeData:(NSDictionary *)theData
 {
-    [_objects replaceObjectAtIndex:0 withObject:theData];
+    // 1. mkdir
+    NSString *path;
+	NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+	path = [[paths objectAtIndex:0] stringByAppendingPathComponent:@"Mindmaps"];
+
+	NSError *error;
+	if (![[NSFileManager defaultManager] fileExistsAtPath:path])
+	{
+		if (![[NSFileManager defaultManager] createDirectoryAtPath:path
+									   withIntermediateDirectories:NO
+														attributes:nil
+															 error:&error])
+		{
+			NSLog(@"Create directory error: %@", error);
+		}
+	}
+    // 2. store
+	path = [path stringByAppendingPathComponent:@"SomeFileName"];
+    
     
 
     /*
-    if( !_objects)
-    {
-        _objects = [[NSMutableArray alloc] init] ;
-    }
-
-    [_objects insertObject:theData atIndex:0];
-    [self.tableView insertRowsAtIndexPaths:[NSArray arrayWithObject: [NSIndexPath indexPathForRow:0 inSection:0]] withRowAnimation:UITableViewRowAnimationAutomatic];
-*/
-
+    NSLog(@"%d", [[theData objectForKey:@"nodeImageViews"] count] );
+    [_objects replaceObjectAtIndex:0 withObject:theData];
     
+    [self.tableView reloadData];
+    
+    // store to disk
+    NSString *Path = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
+    NSString *filename = [Path stringByAppendingPathComponent:@"saveDatatest.test"];
+    [NSKeyedArchiver archiveRootObject:theData toFile:filename];
+     */
 }
+
 - (void)awakeFromNib
 {
     if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
@@ -50,37 +68,25 @@
 	// Do any additional setup after loading the view, typically from a nib.
     self.navigationItem.leftBarButtonItem = self.editButtonItem;
     
-    // init the add button
     UIBarButtonItem *addButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(newAndGotoMain:)];
     self.navigationItem.rightBarButtonItem = addButton;
-    // init MMDetailViewCOntroller
     self.detailViewController = (MMDetailViewController *)[[self.splitViewController.viewControllers lastObject] topViewController];
-    
     if (!_objects) {
         _objects = [[NSMutableArray alloc] init];
     }
-    
-    
-    // Miaaa
-// [addButton.target performSelector:addButton.action];
-    
-}
+    [_objects insertObject:[self getFileFromDisk] atIndex:0];
 
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
 }
-//Mia: 按下add button後 ...
 - (void)newAndGotoMain:(id)sender
 {
     // 1. insert a default dictionary into _objects
     NSString *filePath = [[NSBundle mainBundle] pathForResource:@"test" ofType:@"jpg"];
     UIImage *defaultThumbnail = [[UIImage alloc] initWithContentsOfFile:filePath];
     UIImageView *img = [[UIImageView alloc] initWithImage:defaultThumbnail];
-
+    img.contentMode = UIViewContentModeScaleAspectFit;
+    
     NSDictionary *dic = [[NSDictionary alloc] initWithObjectsAndKeys:img, @"thumbnailImageView",
-                                                                    @"defaultFileName", @"title", nil];
+                         @"defaultFileName", @"title", nil];
     [_objects insertObject:dic atIndex:0];
     
     
@@ -94,32 +100,24 @@
     
     // 4. enter the mainEditor
     [self.detailViewController performSegueWithIdentifier: @"ShowDrawViewController" sender: self];
-
-
 }
-/*
-//Mia: 改成 -- 當要離開mainEditor時，再insert
-- (void)insertNewObject
+
+- (void)didReceiveMemoryWarning
 {
-    
+    [super didReceiveMemoryWarning];
+    // Dispose of any resources that can be recreated.
+}
+
+- (void)insertNewObject:(id)sender
+{
     if (!_objects) {
         _objects = [[NSMutableArray alloc] init];
     }
-
-    NSString *filePath = [[NSBundle mainBundle] pathForResource:@"nodeImg" ofType:@"png"];
-    UIImage *im = [[UIImage alloc] initWithContentsOfFile:filePath];
-    UIImageView *img = [[UIImageView alloc] initWithImage:im];
-    NSDictionary *dic = [[NSDictionary alloc] initWithObjectsAndKeys:img, @"imageView", nil];
-    [_objects insertObject:dic atIndex:0];
-    
+    [_objects insertObject:[NSDate date] atIndex:0];
     NSIndexPath *indexPath = [NSIndexPath indexPathForRow:0 inSection:0];
     [self.tableView insertRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
-    
-    [self.detailViewController setDetailItem:img ];
-    self.detailViewController.delegateInDetail = self ;
- 
 }
-*/
+
 #pragma mark - Table View
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -134,8 +132,11 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
+
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"Cell" forIndexPath:indexPath];
+    
     NSString *title = [_objects[indexPath.row] objectForKey:@"title"];
+    NSLog(@"%@", title);
     cell.textLabel.text = title;
     return cell;
 }
@@ -155,75 +156,63 @@
         // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view.
     }
 }
-- (NSInteger) getNewFileID
+
+/*
+// Override to support rearranging the table view.
+- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath
 {
-    NSInteger biggestID;
-    if( [_objects count])
-    {
-        biggestID = (NSInteger)[[_objects objectAtIndex:0] objectForKey:@"fileID"];
-        biggestID ++ ;
-    }
-    else
-    {
-        biggestID = 0 ;
-    }
-    return biggestID;
-    
 }
+*/
 
 /*
- // Override to support rearranging the table view.
- - (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath
- {
- }
- */
+// Override to support conditional rearranging of the table view.
+- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    // Return NO if you do not want the item to be re-orderable.
+    return YES;
+}
+*/
 
-/*
- // Override to support conditional rearranging of the table view.
- - (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath
- {
- // Return NO if you do not want the item to be re-orderable.
- return YES;
- }
- */
+- (NSDictionary *) getFileFromDisk
+{
+    NSString *path;
+	NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+	path = [[paths objectAtIndex:0] stringByAppendingPathComponent:@"Mindmaps"];
+	path = [path stringByAppendingPathComponent:@"fileName"];
+	if ([[NSFileManager defaultManager] fileExistsAtPath:path])
+	{
+    }
+
+    
+    
+    NSString *Path = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
+    NSString *filename = [Path stringByAppendingPathComponent:@"saveDatatest.test"];
+    NSDictionary *getFile = [[NSDictionary alloc] init];
+    getFile = [NSKeyedUnarchiver unarchiveObjectWithFile: filename];
+    return getFile;
+}
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
-        // Miaaa
-        //UIImageView *tmp = [_objects[indexPath.row] objectForKey:@"thumbnailImageView"];
-        
         self.detailViewController.itemDic = _objects[indexPath.row];
-
         [self.detailViewController setThumbnailImageView];
-
         self.detailViewController.delegateInDetail = self ;
-        /*
-         NSDate *object = _objects[indexPath.row];
-         self.detailViewController.detailItem = object;
-         
-         */
     }
 }
+
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
-
-/*
+    /*
     if ([[segue identifier] isEqualToString:@"showDetail"]) {
-        
         NSIndexPath *indexPath = [self.tableView indexPathForSelectedRow];
-        NSDictionary *object = _objects[indexPath.row];
-        MMDetailViewController *detail = [segue destinationViewController];
-        detail.itemDic = object ;
-//        [detail setDetailItem:object];
+        NSDate *object = _objects[indexPath.row];
+        [[segue destinationViewController] setDetailItem:object];
     }
- */
-     
+     */
 }
 
+
+
 @end
-
-
-
-

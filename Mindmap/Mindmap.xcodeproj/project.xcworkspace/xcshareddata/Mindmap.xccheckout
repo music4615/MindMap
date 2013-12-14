@@ -5,34 +5,34 @@
 	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
 	<false/>
 	<key>IDESourceControlProjectIdentifier</key>
-	<string>C1B8148D-351F-4B5D-BFBD-020B8AE1B3D0</string>
+	<string>5F991C06-B937-4854-83B2-1F71EAE4B749</string>
 	<key>IDESourceControlProjectName</key>
 	<string>Mindmap</string>
 	<key>IDESourceControlProjectOriginsDictionary</key>
 	<dict>
-		<key>D8748C07-7C0C-4A90-AC4F-639F9DB7F703</key>
-		<string>https://github.com/music4615/MindMap</string>
+		<key>E725BD06-D884-41A5-A946-9BA553DACDD3</key>
+		<string>https://github.com/music4615/MindMap.git</string>
 	</dict>
 	<key>IDESourceControlProjectPath</key>
 	<string>Mindmap/Mindmap.xcodeproj/project.xcworkspace</string>
 	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
 	<dict>
-		<key>D8748C07-7C0C-4A90-AC4F-639F9DB7F703</key>
+		<key>E725BD06-D884-41A5-A946-9BA553DACDD3</key>
 		<string>../../..</string>
 	</dict>
 	<key>IDESourceControlProjectURL</key>
-	<string>https://github.com/music4615/MindMap</string>
+	<string>https://github.com/music4615/MindMap.git</string>
 	<key>IDESourceControlProjectVersion</key>
 	<integer>110</integer>
 	<key>IDESourceControlProjectWCCIdentifier</key>
-	<string>D8748C07-7C0C-4A90-AC4F-639F9DB7F703</string>
+	<string>E725BD06-D884-41A5-A946-9BA553DACDD3</string>
 	<key>IDESourceControlProjectWCConfigurations</key>
 	<array>
 		<dict>
 			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
 			<string>public.vcs.git</string>
 			<key>IDESourceControlWCCIdentifierKey</key>
-			<string>D8748C07-7C0C-4A90-AC4F-639F9DB7F703</string>
+			<string>E725BD06-D884-41A5-A946-9BA553DACDD3</string>
 			<key>IDESourceControlWCCName</key>
 			<string>MindMap</string>
 		</dict>

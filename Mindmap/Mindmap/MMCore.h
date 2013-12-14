@@ -12,9 +12,11 @@
 
 
 @interface MMNode : UIView {
-    CGPoint location;
+    //CGPoint location;
+
 }
 
+@property(strong, nonatomic) UIColor *selectedColor;
 @property(weak, nonatomic) MMNode* parent;
 @property(strong, nonatomic) NSMutableArray* children;
 @property(strong, nonatomic) NSMutableDictionary* childEdges;
@@ -44,7 +46,8 @@
 
 @property(strong, nonatomic) NSString* mapName;
 @property(strong, nonatomic) MMNode* root;
-
+@property(weak, nonatomic) MMNode* selectedNode;
+-(void)drawFromNodes:(NSMutableArray*) nodes;
 -(id)initWithCoder:(NSCoder *)aDecoder;
 -(void)setRoot:(MMNode*)root andName:(NSString*)name;
 

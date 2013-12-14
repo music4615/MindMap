@@ -7,16 +7,20 @@
 //
 
 #import <UIKit/UIKit.h>
-
+#import "MMHandDrawView.h"
 
 @protocol PopDrawDelegate ;
+
 @interface MMPopDrawViewController : UIViewController
 
 @property (weak) id<PopDrawDelegate> popDelegate ;
+@property (strong, nonatomic) IBOutlet MMHandDrawView *drawView;
+
+
 @end
 
 @protocol PopDrawDelegate <NSObject>
 
--(void) popover:(MMPopDrawViewController *) popView inputImage:(NSData *) image ;
+-(void) popover:(MMPopDrawViewController *) popView inputImage:(UIImage *) image ;
 
 @end
