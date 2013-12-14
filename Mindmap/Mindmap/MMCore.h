@@ -47,7 +47,11 @@
 @property(strong, nonatomic) NSString* mapName;
 @property(strong, nonatomic) MMNode* root;
 @property(weak, nonatomic) MMNode* selectedNode;
+<<<<<<< HEAD
 
+=======
+-(void)drawFromNodes:(NSMutableArray*) nodes;
+>>>>>>> ca03293ac396f7ef9adaa65e582bdf840fdaa4b7
 -(id)initWithCoder:(NSCoder *)aDecoder;
 -(void)setRoot:(MMNode*)root andName:(NSString*)name;
 

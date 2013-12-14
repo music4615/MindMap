@@ -13,7 +13,11 @@
 @end
 
 @implementation MMDrawViewController
+<<<<<<< HEAD
 
+=======
+@synthesize thisFile;
+>>>>>>> ca03293ac396f7ef9adaa65e582bdf840fdaa4b7
 # pragma pop delegate
 -(void) popover:(MMPopDrawViewController *) popView inputImage:(UIImage*) image
 {
@@ -69,6 +73,10 @@
     // 1. get the subViews and the edge imageViews
     for ( UIView *subview in self.mainWorkingView.subviews) {
         
+<<<<<<< HEAD
+=======
+        
+>>>>>>> ca03293ac396f7ef9adaa65e582bdf840fdaa4b7
         if( [subview isKindOfClass:[MMNode class]] )
         {
             [imageSubViews addObject:subview] ;
@@ -92,6 +100,10 @@
             {   bottom = subview.frame.origin.y + subview.frame.size.height;    }
         }
     }
+<<<<<<< HEAD
+=======
+    
+>>>>>>> ca03293ac396f7ef9adaa65e582bdf840fdaa4b7
     // 2. get the thumbnail
     //the action of printing screen
     UIGraphicsBeginImageContext(self.view.frame.size);
@@ -106,6 +118,10 @@
     thumbnailImageView.contentMode = UIViewContentModeScaleAspectFit ;
         
     NSMutableDictionary *newFile = [[NSMutableDictionary alloc] init];
+<<<<<<< HEAD
+=======
+
+>>>>>>> ca03293ac396f7ef9adaa65e582bdf840fdaa4b7
     [newFile addEntriesFromDictionary:self.thisFile];
     [newFile setObject:imageSubViews forKey:@"nodeImageViews"];
     [newFile setObject:thumbnailImageView forKey:@"thumbnailImageView"];
@@ -236,9 +252,24 @@
     [self.mainScrollView setScrollEnabled:YES];
     
     // initialize the graph
+<<<<<<< HEAD
     
     MMNode* node = [MMNode initRootWithPoint:self.mainWorkingView.center AndDelegate:self.mainWorkingView];
     [self.mainWorkingView setRoot:node andName:@"test"];
+=======
+    if( [[self.thisFile objectForKey:@"nodeImageViews"] count])
+    {
+        NSMutableArray *temp = [self.thisFile objectForKey:@"nodeImageViews"];
+        NSLog(@"in drawFromNodes");
+        [self.mainWorkingView drawFromNodes:temp];
+    }
+    else
+    {
+        MMNode* node = [MMNode initRootWithPoint:self.mainWorkingView.center AndDelegate:self.mainWorkingView];
+        [self.mainWorkingView setRoot:node andName:@"test"];
+    }
+    
+>>>>>>> ca03293ac396f7ef9adaa65e582bdf840fdaa4b7
 }
 
 - (void)didReceiveMemoryWarning

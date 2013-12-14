@@ -16,10 +16,48 @@
 @end
 
 @implementation MMMasterViewController
+<<<<<<< HEAD
 - (void)storeData:(NSDictionary *)theData
 {
     NSLog(@"%d", [[theData objectForKey:@"nodeImageViews"] count] );
     [_objects replaceObjectAtIndex:0 withObject:theData];
+=======
+// update
+- (void)storeData:(NSDictionary *)theData
+{
+    // 1. mkdir
+    NSString *path;
+	NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+	path = [[paths objectAtIndex:0] stringByAppendingPathComponent:@"Mindmaps"];
+
+	NSError *error;
+	if (![[NSFileManager defaultManager] fileExistsAtPath:path])
+	{
+		if (![[NSFileManager defaultManager] createDirectoryAtPath:path
+									   withIntermediateDirectories:NO
+														attributes:nil
+															 error:&error])
+		{
+			NSLog(@"Create directory error: %@", error);
+		}
+	}
+    // 2. store
+	path = [path stringByAppendingPathComponent:@"SomeFileName"];
+    
+    
+
+    /*
+    NSLog(@"%d", [[theData objectForKey:@"nodeImageViews"] count] );
+    [_objects replaceObjectAtIndex:0 withObject:theData];
+    
+    [self.tableView reloadData];
+    
+    // store to disk
+    NSString *Path = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
+    NSString *filename = [Path stringByAppendingPathComponent:@"saveDatatest.test"];
+    [NSKeyedArchiver archiveRootObject:theData toFile:filename];
+     */
+>>>>>>> ca03293ac396f7ef9adaa65e582bdf840fdaa4b7
 }
 
 - (void)awakeFromNib
@@ -43,6 +81,11 @@
     if (!_objects) {
         _objects = [[NSMutableArray alloc] init];
     }
+<<<<<<< HEAD
+=======
+    [_objects insertObject:[self getFileFromDisk] atIndex:0];
+
+>>>>>>> ca03293ac396f7ef9adaa65e582bdf840fdaa4b7
 }
 - (void)newAndGotoMain:(id)sender
 {
@@ -51,6 +94,7 @@
     UIImage *defaultThumbnail = [[UIImage alloc] initWithContentsOfFile:filePath];
     UIImageView *img = [[UIImageView alloc] initWithImage:defaultThumbnail];
     img.contentMode = UIViewContentModeScaleAspectFit;
+<<<<<<< HEAD
     
     NSDictionary *dic = [[NSDictionary alloc] initWithObjectsAndKeys:img, @"thumbnailImageView",
                          @"defaultFileName", @"title", nil];
@@ -68,7 +112,24 @@
     // 4. enter the mainEditor
     [self.detailViewController performSegueWithIdentifier: @"ShowDrawViewController" sender: self];
     
+=======
+>>>>>>> ca03293ac396f7ef9adaa65e582bdf840fdaa4b7
     
+    NSDictionary *dic = [[NSDictionary alloc] initWithObjectsAndKeys:img, @"thumbnailImageView",
+                         @"defaultFileName", @"title", nil];
+    [_objects insertObject:dic atIndex:0];
+    
+    
+    // 2. insert and show in columns
+    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:0 inSection:0];
+    [self.tableView insertRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+    
+    // 3. set delegate to pass the data from mainEditor, and pass the data
+    self.detailViewController.delegateInDetail = self ;
+    self.detailViewController.itemDic = [_objects objectAtIndex:0];
+    
+    // 4. enter the mainEditor
+    [self.detailViewController performSegueWithIdentifier: @"ShowDrawViewController" sender: self];
 }
 
 - (void)didReceiveMemoryWarning
@@ -101,8 +162,15 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
+
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"Cell" forIndexPath:indexPath];
+<<<<<<< HEAD
     NSString *title = [_objects[indexPath.row] objectForKey:@"title"];
+=======
+    
+    NSString *title = [_objects[indexPath.row] objectForKey:@"title"];
+    NSLog(@"%@", title);
+>>>>>>> ca03293ac396f7ef9adaa65e582bdf840fdaa4b7
     cell.textLabel.text = title;
     return cell;
 }
@@ -138,18 +206,44 @@
     return YES;
 }
 */
+<<<<<<< HEAD
+=======
+
+- (NSDictionary *) getFileFromDisk
+{
+    NSString *path;
+	NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+	path = [[paths objectAtIndex:0] stringByAppendingPathComponent:@"Mindmaps"];
+	path = [path stringByAppendingPathComponent:@"fileName"];
+	if ([[NSFileManager defaultManager] fileExistsAtPath:path])
+	{
+    }
+
+    
+    
+    NSString *Path = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
+    NSString *filename = [Path stringByAppendingPathComponent:@"saveDatatest.test"];
+    NSDictionary *getFile = [[NSDictionary alloc] init];
+    getFile = [NSKeyedUnarchiver unarchiveObjectWithFile: filename];
+    return getFile;
+}
+>>>>>>> ca03293ac396f7ef9adaa65e582bdf840fdaa4b7
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
+<<<<<<< HEAD
         // Miaaa
         //UIImageView *tmp = [_objects[indexPath.row] objectForKey:@"thumbnailImageView"];
         
+=======
+>>>>>>> ca03293ac396f7ef9adaa65e582bdf840fdaa4b7
         self.detailViewController.itemDic = _objects[indexPath.row];
         [self.detailViewController setThumbnailImageView];
         self.detailViewController.delegateInDetail = self ;
     }
 }
+
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
@@ -162,4 +256,9 @@
      */
 }
 
+<<<<<<< HEAD
+=======
+
+
+>>>>>>> ca03293ac396f7ef9adaa65e582bdf840fdaa4b7
 @end
