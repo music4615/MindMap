@@ -12,26 +12,16 @@
 
 @interface MMMasterViewController () {
     NSMutableArray *_objects;
-    NSMutableArray *files;
 }
 @end
 
 @implementation MMMasterViewController
-//Mia: get the data from detailViewController
 - (void)storeData:(NSDictionary *)theData
 {
-    if( !files)
-    {
-        files = [[NSMutableArray alloc] init] ;
-    }
-    [files insertObject:theData atIndex:0];
-    [self.tableView insertRowsAtIndexPaths:[NSArray arrayWithObject: [NSIndexPath indexPathForRow:0 inSection:0]] withRowAnimation:UITableViewRowAnimationAutomatic];
-//    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:0 inSection:0];
- //   [self.tableView insertRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
-
-    NSLog(@"gg %d", [files count]);
-    
+    NSLog(@"%d", [[theData objectForKey:@"nodeImageViews"] count] );
+    [_objects replaceObjectAtIndex:0 withObject:theData];
 }
+
 - (void)awakeFromNib
 {
     if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
@@ -47,21 +37,37 @@
 	// Do any additional setup after loading the view, typically from a nib.
     self.navigationItem.leftBarButtonItem = self.editButtonItem;
     
-    UIBarButtonItem *addButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(insertNewObject:)];
+    UIBarButtonItem *addButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(newAndGotoMain:)];
     self.navigationItem.rightBarButtonItem = addButton;
     self.detailViewController = (MMDetailViewController *)[[self.splitViewController.viewControllers lastObject] topViewController];
-    
-    // Miaaa
-    [addButton.target performSelector:addButton.action];
-    if( !files)
-    {
-        files = [[NSMutableArray alloc] init];
+    if (!_objects) {
+        _objects = [[NSMutableArray alloc] init];
     }
+}
+- (void)newAndGotoMain:(id)sender
+{
+    // 1. insert a default dictionary into _objects
     NSString *filePath = [[NSBundle mainBundle] pathForResource:@"test" ofType:@"jpg"];
-    UIImage *im = [[UIImage alloc] initWithContentsOfFile:filePath];
-    UIImageView *img = [[UIImageView alloc] initWithImage:im];
-    NSDictionary *t = [[NSDictionary alloc] initWithObjectsAndKeys:img, @"imageView", nil];
-    [files insertObject:t atIndex:0];
+    UIImage *defaultThumbnail = [[UIImage alloc] initWithContentsOfFile:filePath];
+    UIImageView *img = [[UIImageView alloc] initWithImage:defaultThumbnail];
+    img.contentMode = UIViewContentModeScaleAspectFit;
+    
+    NSDictionary *dic = [[NSDictionary alloc] initWithObjectsAndKeys:img, @"thumbnailImageView",
+                         @"defaultFileName", @"title", nil];
+    [_objects insertObject:dic atIndex:0];
+    
+    
+    // 2. insert and show in columns
+    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:0 inSection:0];
+    [self.tableView insertRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+    
+    // 3. set delegate to pass the data from mainEditor, and pass the data
+    self.detailViewController.delegateInDetail = self ;
+    self.detailViewController.itemDic = [_objects objectAtIndex:0];
+    
+    // 4. enter the mainEditor
+    [self.detailViewController performSegueWithIdentifier: @"ShowDrawViewController" sender: self];
+    
     
 }
 
@@ -73,13 +79,12 @@
 
 - (void)insertNewObject:(id)sender
 {
-     if (!_objects) {
-         _objects = [[NSMutableArray alloc] init];
-     }
-     [_objects insertObject:[NSDate date] atIndex:0];
-     NSIndexPath *indexPath = [NSIndexPath indexPathForRow:0 inSection:0];
-     [self.tableView insertRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
-    
+    if (!_objects) {
+        _objects = [[NSMutableArray alloc] init];
+    }
+    [_objects insertObject:[NSDate date] atIndex:0];
+    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:0 inSection:0];
+    [self.tableView insertRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
 }
 
 #pragma mark - Table View
@@ -91,15 +96,14 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return files.count;
+    return _objects.count;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"Cell" forIndexPath:indexPath];
-    
-    NSDate *object = _objects[indexPath.row];
-    cell.textLabel.text = [object description];
+    NSString *title = [_objects[indexPath.row] objectForKey:@"title"];
+    cell.textLabel.text = title;
     return cell;
 }
 
@@ -120,50 +124,42 @@
 }
 
 /*
- // Override to support rearranging the table view.
- - (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath
- {
- }
- */
+// Override to support rearranging the table view.
+- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath
+{
+}
+*/
 
 /*
- // Override to support conditional rearranging of the table view.
- - (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath
- {
- // Return NO if you do not want the item to be re-orderable.
- return YES;
- }
- */
+// Override to support conditional rearranging of the table view.
+- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    // Return NO if you do not want the item to be re-orderable.
+    return YES;
+}
+*/
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
         // Miaaa
-        UIImageView *tmp = [files[indexPath.row] objectForKey:@"imageView"];
-        [self.detailViewController setDetailItem:tmp ];
+        //UIImageView *tmp = [_objects[indexPath.row] objectForKey:@"thumbnailImageView"];
+        
+        self.detailViewController.itemDic = _objects[indexPath.row];
+        [self.detailViewController setThumbnailImageView];
         self.detailViewController.delegateInDetail = self ;
-        /*
-         NSDate *object = _objects[indexPath.row];
-         self.detailViewController.detailItem = object;
-         
-         */
     }
 }
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
+    /*
     if ([[segue identifier] isEqualToString:@"showDetail"]) {
-        
         NSIndexPath *indexPath = [self.tableView indexPathForSelectedRow];
         NSDate *object = _objects[indexPath.row];
-        MMDetailViewController *detail = [segue destinationViewController];
-        [detail setDetailItem:object];
-        
+        [[segue destinationViewController] setDetailItem:object];
     }
+     */
 }
 
 @end
-
-
-
-

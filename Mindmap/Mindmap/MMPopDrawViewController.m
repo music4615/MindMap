@@ -14,14 +14,18 @@
 
 @implementation MMPopDrawViewController
 
-- (IBAction)pop_back:(id)sender {
-    NSString* path = [[NSBundle mainBundle] pathForResource:@"test" ofType:@"jpg"];
-    NSData* image = [NSData dataWithContentsOfFile:path];
+- (IBAction)doneButtonClicked:(id)sender {
+    //make current context a image
+    UIImage* image = [self.drawView getImage];
+    
     if([self.popDelegate respondsToSelector:@selector(popover:inputImage:)])
     {
         [self.popDelegate popover:self inputImage:image] ;
     }
-    [self dismissViewControllerAnimated:YES completion:^{}];
+}
+
+- (IBAction)cancelButtonClicked:(id)sender {
+
 }
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil

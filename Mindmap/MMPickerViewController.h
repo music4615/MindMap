@@ -11,8 +11,7 @@
 @protocol PickerDelegate <NSObject>
 @required
 -(void)selectedItem:(UIColor *)color andShape:(NSString *)color;
-
-
+-(void)hiddenMenuReact ; 
 @end
 
 @interface MMPickerViewController : UITableViewController

@@ -10,78 +10,66 @@
 
 @interface MMDrawViewController ()
 
-@property (weak, nonatomic) IBOutlet UIImageView *imageView;
-- (IBAction)choose_shape:(id)sender;
-- (IBAction)choose_color:(id)sender;
-- (IBAction)get_thumbnail:(id)sender;
-
 @end
 
 @implementation MMDrawViewController
 
-// Mia: show the menu to choose color and shape
-#pragma mark - ButtonAction
-- (IBAction)choose_shape:(id)sender
+# pragma pop delegate
+-(void) popover:(MMPopDrawViewController *) popView inputImage:(UIImage*) image
 {
-    if (_shapePickerTableView == nil) {
-        //Create the ColorPickerViewController.
-        _shapePickerTableView = [[MMPickerViewController alloc] init];
-        _shapePickerTableView.type = @"Shape";
-        _shapePickerTableView = [_shapePickerTableView initWithStyle:UITableViewStylePlain];
-        
-        //Set this VC as the delegate.
-        _shapePickerTableView.delegate = self;
-    }
+    UIImageView* imView = [[UIImageView alloc] initWithImage:image];
+    [imView setFrame:CGRectMake(0, 0, 100, 100)] ;
+    [self.mainWorkingView.selectedNode addSubview:imView];
+    [self.drawPopoverController dismissPopoverAnimated:YES];
+    self.drawPopoverController = nil;
+}
+
+-(BOOL) popoverControllerShouldDismissPopover:(UIPopoverController *)popoverController {
     
-    if (_shapePickerPopover == nil) {
-        //The color picker popover is not showing. Show it.
-        _shapePickerPopover = [[UIPopoverController alloc] initWithContentViewController:_shapePickerTableView];
-        [_shapePickerPopover presentPopoverFromBarButtonItem:(UIBarButtonItem *)sender
-                                    permittedArrowDirections:UIPopoverArrowDirectionUp animated:YES];
+    
+    return YES;
+}
+
+-(void) popoverControllerDidDismissPopover:(UIPopoverController *)popoverController {
+    self.drawPopoverController = nil;
+}
+
+- (IBAction)popoverButtonTouched:(id)sender {
+    if (self.drawPopoverController) {
+        // dismiss popover
+        [self.drawPopoverController dismissPopoverAnimated:YES];
+        self.drawPopoverController = nil;
     }
     else {
-        //The color picker popover is showing. Hide it.
-        [_shapePickerPopover dismissPopoverAnimated:YES];
-        _shapePickerPopover = nil;
+        if (self.mainWorkingView.selectedNode) {
+            [self performSegueWithIdentifier:@"PopDraw" sender:self];
+        }
+        
     }
 }
-- (IBAction)choose_color:(id)sender
+
+-(void) prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
-    if (_colorPickerTableView == nil) {
-        //Create the ColorPickerViewController.
-        _colorPickerTableView = [[MMPickerViewController alloc] init];
-        _colorPickerTableView.type = @"Color";
-        _colorPickerTableView = [_colorPickerTableView initWithStyle:UITableViewStylePlain];
+    if ([segue.identifier isEqualToString:@"PopDraw"]) {
+        MMPopDrawViewController *pop = segue.destinationViewController;
+        pop.popDelegate = self;
         
-        //Set this VC as the delegate.
-        _colorPickerTableView.delegate = self;
+        if ([segue isKindOfClass:[UIStoryboardPopoverSegue class]]) {
+            self.drawPopoverController = [(UIStoryboardPopoverSegue*)segue popoverController];
+            [self.drawPopoverController setDelegate:self];
+        }
     }
     
-    if (_colorPickerPopover == nil) {
-        //The color picker popover is not showing. Show it.
-        _colorPickerPopover = [[UIPopoverController alloc] initWithContentViewController:_colorPickerTableView];
-        [_colorPickerPopover presentPopoverFromBarButtonItem:(UIBarButtonItem *)sender
-                               permittedArrowDirections:UIPopoverArrowDirectionUp animated:YES];
-    }
-    else {
-        //The color picker popover is showing. Hide it.
-        [_colorPickerPopover dismissPopoverAnimated:YES];
-        _colorPickerPopover = nil;
-        //self.view.userInteractionEnabled = YES ;
-    }
 }
-// Mia: get the thumbnail of the screen
-- (IBAction)get_thumbnail:(id)sender {
-    float left = 0 ;
-    float right = 0 ;
-    float top = 0 ;
-    float bottom = 0 ;
+- (NSDictionary*) getAFile
+{
+    float left, right, top, bottom;
     float counter = 0 ;
     NSMutableArray *imageSubViews = [[NSMutableArray alloc] init ] ;
-    // to find the most left, top, right, bottom UIImageView
-    for ( UIView *subview in self.view.subviews) {
+    // 1. get the subViews and the edge imageViews
+    for ( UIView *subview in self.mainWorkingView.subviews) {
         
-        if( [subview isKindOfClass:[UIImageView class]] )
+        if( [subview isKindOfClass:[MMNode class]] )
         {
             [imageSubViews addObject:subview] ;
             if( counter == 0 )
@@ -95,32 +83,18 @@
             }
             
             if( subview.frame.origin.x < left )
-            {
-                
-                left = subview.frame.origin.x;
-            }
+            {   left = subview.frame.origin.x;  }
             if( subview.frame.origin.x + subview.frame.size.width > right )
-            {
-                //NSLog(@"width %f", subview.frame.origin.x + subview.frame.size.width);
-                right = subview.frame.origin.x + subview.frame.size.width;
-            }
+            {   right = subview.frame.origin.x + subview.frame.size.width;  }
             if( subview.frame.origin.y < top )
-            {
-                //NSLog(@"y %f", subview.frame.origin.y);
-                top = subview.frame.origin.y;
-            }
+            {   top = subview.frame.origin.y;   }
             if( subview.frame.origin.y + subview.frame.size.height > bottom )
-            {
-                //NSLog(@"height %f", subview.frame.origin.y + subview.frame.size.height);
-                bottom = subview.frame.origin.y + subview.frame.size.height;
-            }
-            
+            {   bottom = subview.frame.origin.y + subview.frame.size.height;    }
         }
-        
     }
-    
+    // 2. get the thumbnail
     //the action of printing screen
-    UIGraphicsBeginImageContext(self.view.bounds.size);
+    UIGraphicsBeginImageContext(self.view.frame.size);
     [self.view.layer renderInContext:UIGraphicsGetCurrentContext()];
     UIImage *screen = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
@@ -129,54 +103,17 @@
     CGImageRef croppedImageRef = CGImageCreateWithImageInRect([screen CGImage], croppedImageEdge);
     UIImage *thumbnailImage = [UIImage imageWithCGImage:croppedImageRef];
     UIImageView *thumbnailImageView = [[UIImageView alloc] initWithImage:thumbnailImage];
+    thumbnailImageView.contentMode = UIViewContentModeScaleAspectFit ;
+        
+    NSMutableDictionary *newFile = [[NSMutableDictionary alloc] init];
+    [newFile addEntriesFromDictionary:self.thisFile];
+    [newFile setObject:imageSubViews forKey:@"nodeImageViews"];
+    [newFile setObject:thumbnailImageView forKey:@"thumbnailImageView"];
+    [newFile setObject:@"testForThumbnail" forKey:@"title"];
+    return newFile;
     
-    // automatic scale the photo to the size of the frame
-    thumbnailImageView.contentMode = UIViewContentModeScaleAspectFit;
-    thumbnailImageView.frame = CGRectMake(0, 0, 448, 1024); // 448*1024: size of detailViewController
-    
-    // 加上他的border 只是為了測試 可以刪掉
-    [thumbnailImageView.layer setBorderColor: [[UIColor blackColor] CGColor]];
-    [thumbnailImageView.layer setBorderWidth: 2.0];
-    
-    [self.view addSubview:thumbnailImageView] ;
-    NSDictionary *temp = [[NSDictionary alloc] initWithObjectsAndKeys:imageSubViews, @"mainEditor",
-                                                                    thumbnailImageView, @"imageView", nil] ;
-    
-    [self.delegateInDraw recieveData:temp] ;
-
 }
-// Mia: end to choose the menu
 
-// Mia: delegate from "MMPickerViewController"
-#pragma mark - PickerDelegate method
--(void)selectedItem:(UIColor *)color andShape:(NSString *)shape
-{
-    if( color )
-    {
-        selectedColor = color;
-        // 讓 popover 視窗 以動畫消失
-        if (_colorPickerPopover) {
-            [_colorPickerPopover dismissPopoverAnimated:YES];
-            _colorPickerPopover = nil;
-        }
-        // 改變顏色
-        if( [touchedObjects count] )
-        {
-            for (UIImageView *imgView in touchedObjects) {
-                [self change_color:imgView andColor:selectedColor] ;
-            } // end for loop
-        }
-    }
-    else if( shape )
-    {
-        selectedShape = shape;
-        if (_shapePickerPopover) {
-            [_shapePickerPopover dismissPopoverAnimated:YES];
-            _shapePickerPopover = nil;
-        }
-    }
-
-}
 - (void) change_color:(UIImageView *)imgView andColor:(UIColor *)color
 {
     // 重新畫出一張圖，然後 把它的顏色 Blend
@@ -200,24 +137,75 @@
     
     [imgView setImage:temp] ;
 }
-
-// Mia: end to show the actionSheet
-
-
-
-# pragma pop delegate
--(void) popover:(MMPopDrawViewController *) popView inputImage:(NSData *) image
+#pragma mark - PickerDelegate method
+-(void)selectedItem:(UIColor *)color andShape:(NSString *)shape
 {
-    self.imageView.image = [UIImage imageWithData:image];
+    if( color )
+    {
+        self.mainWorkingView.selectedNode.selectedColor = color;
+        // 讓 popover 視窗 以動畫消失
+        if (_colorPickerPopover) {
+            [_colorPickerPopover dismissPopoverAnimated:YES];
+            _colorPickerPopover = nil;
+        }
+        // 改變顏色
+        if( self.mainWorkingView.selectedNode )
+        {
+            UIImageView *imgView = [self.mainWorkingView.selectedNode.subviews objectAtIndex:0];
+            [imgView setFrame:CGRectMake(0, 0, 100, 100)];
+            [self change_color:imgView andColor:color] ;
+            //[self.mainWorkingView.selectedNode setTransform:CGAffineTransformIdentity];
+            
+        }
+    }
+    /*
+    else if( shape )
+    {
+        selectedShape = shape;
+        if (_shapePickerPopover) {
+            [_shapePickerPopover dismissPopoverAnimated:YES];
+            _shapePickerPopover = nil;
+        }
+    }
+     */
+    
+}
+- (IBAction)save:(id)sender {
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
+
+        // 1. refresh the file
+        self.thisFile = [self getAFile];
+        // 2. send it back
+        [self.delegateInDraw recieveData:self.thisFile] ;
+        
+    });
 }
 
--(void) prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
-{
-    if ([segue.identifier isEqualToString:@"PopDraw"]) {
-        MMPopDrawViewController *pop = segue.destinationViewController;
-        pop.popDelegate = self;
+
+- (IBAction)changeColor:(id)sender {
+    if (_colorPickerTableView == nil) {
+        //Create the ColorPickerViewController.
+        _colorPickerTableView = [[MMPickerViewController alloc] init];
+        _colorPickerTableView.type = @"Color";
+        _colorPickerTableView = [_colorPickerTableView initWithStyle:UITableViewStylePlain];
+        
+        //Set this VC as the delegate.
+        _colorPickerTableView.delegate = self;
     }
     
+    if (_colorPickerPopover == nil) {
+        //The color picker popover is not showing. Show it.
+        _colorPickerPopover = [[UIPopoverController alloc] initWithContentViewController:_colorPickerTableView];
+        [_colorPickerPopover presentPopoverFromBarButtonItem:(UIBarButtonItem *)sender
+                                    permittedArrowDirections:UIPopoverArrowDirectionUp animated:YES];
+    }
+    else {
+        //The color picker popover is showing. Hide it.
+        [_colorPickerPopover dismissPopoverAnimated:YES];
+        _colorPickerPopover = nil;
+        //self.view.userInteractionEnabled = YES ;
+    }
+
 }
 
 # pragma go back to master/detail
@@ -232,6 +220,7 @@
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         // Custom initialization
+        self.drawPopoverController = nil;
         
     }
     return self;
@@ -245,102 +234,12 @@
     [self.mainScrollView setMinimumZoomScale:1.0];
     [self.mainScrollView setDelegate:self];
     [self.mainScrollView setScrollEnabled:YES];
+    
     // initialize the graph
     
     MMNode* node = [MMNode initRootWithPoint:self.mainWorkingView.center AndDelegate:self.mainWorkingView];
     [self.mainWorkingView setRoot:node andName:@"test"];
-    
-    
-    // Mia: init the actionSheet of shapea and color, and the touching imageView
-    touching = [UIImageView alloc];
-    selectedColor = [[UIColor alloc] init] ;
-    touchedObjects = [[NSMutableSet alloc] init] ;
-    // Mia: end to init
-    
-    // Mia: just for test
-    CGPoint point = CGPointMake(100, 100);
-    [self drawShape:@"Rectangle" andPoint:point] ;
-    point = CGPointMake(400, 200);
-    [self drawShape:@"Rectangle" andPoint:point] ;
-    // Mia: end test
 }
-
--(void) drawShape: (NSString *)shape andPoint:(CGPoint)position
-{
-    if( [shape isEqualToString:@"Circle"] )
-    {}
-    else if( [shape isEqualToString:@"Rectangle"])
-    {
-        CGSize size = CGSizeMake(100.f, 100.f);
-        UIGraphicsBeginImageContextWithOptions(size, NO, 0.f);
-        CGContextRef context = UIGraphicsGetCurrentContext();
-        UIColor *color = [[UIColor alloc] initWithRed:.5f green:.6f
-                                                 blue:.7f alpha:1.f];
-        CGContextSetFillColorWithColor(context, color.CGColor);
-        CGContextFillRect(context, (CGRect){.origin=CGPointZero, .size=size});
-        UIImage *result = UIGraphicsGetImageFromCurrentImageContext();
-        UIGraphicsEndImageContext();
-        UIImageView *imgView = [[UIImageView alloc] initWithImage:result ];
-        imgView.frame = CGRectMake(position.x, position.y, size.width, size.height);
-        imgView.userInteractionEnabled = YES;
-        [self.view addSubview:imgView];
-    }
-}
-
-
-- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
-    UITouch *touch = [touches anyObject];
-        //UITouch *touch = [[event allTouches] anyObject];
-        //CGPoint location = [touch locationInView:touch.view];
-    
-    if( [[touch valueForKey:@"view"] isKindOfClass:[UIImageView class]] )
-    {
-        start = [[touches anyObject] locationInView:self.view];
-        
-        UIColor *borderColor = [UIColor colorWithRed:1 green:0 blue:0 alpha:0.5];
-        
-        touching = [touch valueForKey:@"view"];
-        
-        [touching.layer setBorderColor:borderColor.CGColor];
-        [touching.layer setBorderWidth:3.0];
-        [self.view addSubview:touching];
-        
-        [touchedObjects addObject:touching];
-    }
-    else
-    {
-        NSLog(@"4");
-    }
-
-}
-- (void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event {
-    /*
-    UITouch *touch = [touches anyObject];
-    if( [[touch valueForKey:@"view"] isKindOfClass:[UIImageView class]] )
-    {
-        CGPoint location = [touch locationInView:touch.view];
-        touching = [touch valueForKey:@"view"];
-        CGPoint moving = CGPointMake( touching.frame.origin.x+location.x, touching.frame.origin.y+location.y);
-        touching.frame = CGRectMake(moving.x, moving.y, 100.f, 100.f);
-        
-
-
-        touching.userInteractionEnabled = YES;
-        [self.view addSubview:touching];
-    }
-     */
-}
-
-- (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event{
-    /*
-    UITouch *touch = [touches anyObject];
-    touching = [touch valueForKey:@"view"];
-
-    [touching.layer setBorderWidth:0];
-    [self.view addSubview:touching];
-     */
-}
-
 
 - (void)didReceiveMemoryWarning
 {
@@ -357,5 +256,14 @@
 - (UIView *)viewForZoomingInScrollView:(UIScrollView *)scrollView  {
     return self.mainWorkingView;
 }
+
+# pragma basic operation
+- (IBAction)deleteSelectedNode:(id)sender {
+    if (self.mainWorkingView.selectedNode != self.mainWorkingView.root) {
+        [self.mainWorkingView.selectedNode deleteNode];
+        self.mainWorkingView.selectedNode = nil;
+    }
+}
+
 
 @end

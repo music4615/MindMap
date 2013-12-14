@@ -5,29 +5,19 @@
 	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
 	<false/>
 	<key>IDESourceControlProjectIdentifier</key>
-<<<<<<< HEAD
-	<string>39D92E61-00E0-4ECF-BB94-3177BCD58F28</string>
-=======
-	<string>718C481A-81A2-4520-9752-B88E308F164B</string>
->>>>>>> 9277476a417cb60ff2c28c36ad689d473b5b77a8
+	<string>5F991C06-B937-4854-83B2-1F71EAE4B749</string>
 	<key>IDESourceControlProjectName</key>
 	<string>Mindmap</string>
 	<key>IDESourceControlProjectOriginsDictionary</key>
 	<dict>
-<<<<<<< HEAD
-		<key>F8A1DEF0-368F-4E25-B619-21C514510C2B</key>
+		<key>E725BD06-D884-41A5-A946-9BA553DACDD3</key>
 		<string>https://github.com/music4615/MindMap.git</string>
-=======
-		<key>5D66A8CF-A2E7-40A6-9EFD-BC05E68F85B2</key>
-		<string>ssh://github.com/music4615/MindMap</string>
->>>>>>> 9277476a417cb60ff2c28c36ad689d473b5b77a8
 	</dict>
 	<key>IDESourceControlProjectPath</key>
 	<string>Mindmap/Mindmap.xcodeproj/project.xcworkspace</string>
 	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
 	<dict>
-<<<<<<< HEAD
-		<key>F8A1DEF0-368F-4E25-B619-21C514510C2B</key>
+		<key>E725BD06-D884-41A5-A946-9BA553DACDD3</key>
 		<string>../../..</string>
 	</dict>
 	<key>IDESourceControlProjectURL</key>
@@ -35,29 +25,14 @@
 	<key>IDESourceControlProjectVersion</key>
 	<integer>110</integer>
 	<key>IDESourceControlProjectWCCIdentifier</key>
-	<string>F8A1DEF0-368F-4E25-B619-21C514510C2B</string>
-=======
-		<key>5D66A8CF-A2E7-40A6-9EFD-BC05E68F85B2</key>
-		<string>../../..</string>
-	</dict>
-	<key>IDESourceControlProjectURL</key>
-	<string>ssh://github.com/music4615/MindMap</string>
-	<key>IDESourceControlProjectVersion</key>
-	<integer>110</integer>
-	<key>IDESourceControlProjectWCCIdentifier</key>
-	<string>5D66A8CF-A2E7-40A6-9EFD-BC05E68F85B2</string>
->>>>>>> 9277476a417cb60ff2c28c36ad689d473b5b77a8
+	<string>E725BD06-D884-41A5-A946-9BA553DACDD3</string>
 	<key>IDESourceControlProjectWCConfigurations</key>
 	<array>
 		<dict>
 			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
 			<string>public.vcs.git</string>
 			<key>IDESourceControlWCCIdentifierKey</key>
-<<<<<<< HEAD
-			<string>F8A1DEF0-368F-4E25-B619-21C514510C2B</string>
-=======
-			<string>5D66A8CF-A2E7-40A6-9EFD-BC05E68F85B2</string>
->>>>>>> 9277476a417cb60ff2c28c36ad689d473b5b77a8
+			<string>E725BD06-D884-41A5-A946-9BA553DACDD3</string>
 			<key>IDESourceControlWCCName</key>
 			<string>MindMap</string>
 		</dict>

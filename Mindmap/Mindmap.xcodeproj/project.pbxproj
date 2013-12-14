@@ -7,11 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0446E66F185AADCA004E00E9 /* MMHandDrawView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0446E66E185AADCA004E00E9 /* MMHandDrawView.m */; };
 		04A19129184A3F8800CA8826 /* MMCore.m in Sources */ = {isa = PBXBuildFile; fileRef = 04A19128184A3F8800CA8826 /* MMCore.m */; };
 		04A19130184B94E800CA8826 /* nodeImg.png in Resources */ = {isa = PBXBuildFile; fileRef = 04A1912F184B94E800CA8826 /* nodeImg.png */; };
 		04A19132184B99AF00CA8826 /* nodeImage.png in Resources */ = {isa = PBXBuildFile; fileRef = 04A19131184B99AF00CA8826 /* nodeImage.png */; };
-		3075E656184D857600D1AB13 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3075E655184D857600D1AB13 /* CoreData.framework */; };
-		3075E659184D85BE00D1AB13 /* MMCoreData.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 3075E657184D85BE00D1AB13 /* MMCoreData.xcdatamodeld */; };
 		3086B6081840BEC0004056E8 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3086B6071840BEC0004056E8 /* Foundation.framework */; };
 		3086B60A1840BEC0004056E8 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3086B6091840BEC0004056E8 /* CoreGraphics.framework */; };
 		3086B60C1840BEC0004056E8 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3086B60B1840BEC0004056E8 /* UIKit.framework */; };
@@ -31,19 +30,8 @@
 		3086B6461840CB44004056E8 /* MMDrawViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3086B6451840CB44004056E8 /* MMDrawViewController.m */; };
 		3086B6491840E50B004056E8 /* MMPopDrawViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3086B6481840E50B004056E8 /* MMPopDrawViewController.m */; };
 		3086B64B1840E7BB004056E8 /* test.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 3086B64A1840E7BB004056E8 /* test.jpg */; };
-		30C94C7C18502348002135AD /* MMPickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 30C94C7B18502348002135AD /* MMPickerViewController.m */; };
+		309090B8185AEB3E007B99C0 /* MMPickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 309090B7185AEB3E007B99C0 /* MMPickerViewController.m */; };
 /* End PBXBuildFile section */
-
-/* Begin PBXBuildRule section */
-		3075E654184D842800D1AB13 /* PBXBuildRule */ = {
-			isa = PBXBuildRule;
-			compilerSpec = com.apple.compilers.proxy.script;
-			fileType = pattern.proxy;
-			isEditable = 1;
-			outputFiles = (
-			);
-		};
-/* End PBXBuildRule section */
 
 /* Begin PBXContainerItemProxy section */
 		3086B6301840BEC0004056E8 /* PBXContainerItemProxy */ = {
@@ -56,12 +44,12 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		0446E66D185AADCA004E00E9 /* MMHandDrawView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MMHandDrawView.h; sourceTree = "<group>"; };
+		0446E66E185AADCA004E00E9 /* MMHandDrawView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MMHandDrawView.m; sourceTree = "<group>"; };
 		04A19127184A3F8800CA8826 /* MMCore.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MMCore.h; sourceTree = "<group>"; };
 		04A19128184A3F8800CA8826 /* MMCore.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MMCore.m; sourceTree = "<group>"; };
 		04A1912F184B94E800CA8826 /* nodeImg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = nodeImg.png; sourceTree = "<group>"; };
 		04A19131184B99AF00CA8826 /* nodeImage.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = nodeImage.png; sourceTree = "<group>"; };
-		3075E655184D857600D1AB13 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
-		3075E658184D85BE00D1AB13 /* MMCoreData.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = MMCoreData.xcdatamodel; sourceTree = "<group>"; };
 		3086B6041840BEC0004056E8 /* Mindmap.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Mindmap.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3086B6071840BEC0004056E8 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		3086B6091840BEC0004056E8 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -89,8 +77,8 @@
 		3086B6471840E50B004056E8 /* MMPopDrawViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MMPopDrawViewController.h; sourceTree = "<group>"; };
 		3086B6481840E50B004056E8 /* MMPopDrawViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MMPopDrawViewController.m; sourceTree = "<group>"; };
 		3086B64A1840E7BB004056E8 /* test.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = test.jpg; sourceTree = "<group>"; };
-		30C94C7A18502348002135AD /* MMPickerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MMPickerViewController.h; sourceTree = "<group>"; };
-		30C94C7B18502348002135AD /* MMPickerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MMPickerViewController.m; sourceTree = "<group>"; };
+		309090B6185AEB3E007B99C0 /* MMPickerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MMPickerViewController.h; path = ../MMPickerViewController.h; sourceTree = "<group>"; };
+		309090B7185AEB3E007B99C0 /* MMPickerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MMPickerViewController.m; path = ../MMPickerViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -98,7 +86,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				3075E656184D857600D1AB13 /* CoreData.framework in Frameworks */,
 				3086B60A1840BEC0004056E8 /* CoreGraphics.framework in Frameworks */,
 				3086B60C1840BEC0004056E8 /* UIKit.framework in Frameworks */,
 				3086B6081840BEC0004056E8 /* Foundation.framework in Frameworks */,
@@ -118,6 +105,17 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		0446E670185AADF5004E00E9 /* HandDraw */ = {
+			isa = PBXGroup;
+			children = (
+				0446E66D185AADCA004E00E9 /* MMHandDrawView.h */,
+				0446E66E185AADCA004E00E9 /* MMHandDrawView.m */,
+				3086B6471840E50B004056E8 /* MMPopDrawViewController.h */,
+				3086B6481840E50B004056E8 /* MMPopDrawViewController.m */,
+			);
+			name = HandDraw;
+			sourceTree = "<group>";
+		};
 		04A1912A184A406B00CA8826 /* MainEditor */ = {
 			isa = PBXGroup;
 			children = (
@@ -151,7 +149,6 @@
 		3086B6061840BEC0004056E8 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				3075E655184D857600D1AB13 /* CoreData.framework */,
 				3086B6071840BEC0004056E8 /* Foundation.framework */,
 				3086B6091840BEC0004056E8 /* CoreGraphics.framework */,
 				3086B60B1840BEC0004056E8 /* UIKit.framework */,
@@ -163,10 +160,10 @@
 		3086B60D1840BEC0004056E8 /* Mindmap */ = {
 			isa = PBXGroup;
 			children = (
-				3075E657184D85BE00D1AB13 /* MMCoreData.xcdatamodeld */,
+				309090B6185AEB3E007B99C0 /* MMPickerViewController.h */,
+				309090B7185AEB3E007B99C0 /* MMPickerViewController.m */,
+				0446E670185AADF5004E00E9 /* HandDraw */,
 				04A1912A184A406B00CA8826 /* MainEditor */,
-				3086B6471840E50B004056E8 /* MMPopDrawViewController.h */,
-				3086B6481840E50B004056E8 /* MMPopDrawViewController.m */,
 				3086B6161840BEC0004056E8 /* MMAppDelegate.h */,
 				3086B6171840BEC0004056E8 /* MMAppDelegate.m */,
 				3086B61C1840BEC0004056E8 /* Main_iPad.storyboard */,
@@ -180,8 +177,6 @@
 				3086B64A1840E7BB004056E8 /* test.jpg */,
 				3086B6421840C829004056E8 /* mm.tiff */,
 				3086B60E1840BEC0004056E8 /* Supporting Files */,
-				30C94C7A18502348002135AD /* MMPickerViewController.h */,
-				30C94C7B18502348002135AD /* MMPickerViewController.m */,
 			);
 			path = Mindmap;
 			sourceTree = "<group>";
@@ -227,7 +222,6 @@
 				3086B6021840BEC0004056E8 /* Resources */,
 			);
 			buildRules = (
-				3075E654184D842800D1AB13 /* PBXBuildRule */,
 			);
 			dependencies = (
 			);
@@ -319,11 +313,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				04A19129184A3F8800CA8826 /* MMCore.m in Sources */,
+				0446E66F185AADCA004E00E9 /* MMHandDrawView.m in Sources */,
 				3086B6181840BEC0004056E8 /* MMAppDelegate.m in Sources */,
+				309090B8185AEB3E007B99C0 /* MMPickerViewController.m in Sources */,
 				3086B6211840BEC0004056E8 /* MMMasterViewController.m in Sources */,
-				30C94C7C18502348002135AD /* MMPickerViewController.m in Sources */,
 				3086B6141840BEC0004056E8 /* main.m in Sources */,
-				3075E659184D85BE00D1AB13 /* MMCoreData.xcdatamodeld in Sources */,
 				3086B6461840CB44004056E8 /* MMDrawViewController.m in Sources */,
 				3086B6491840E50B004056E8 /* MMPopDrawViewController.m in Sources */,
 				3086B6241840BEC0004056E8 /* MMDetailViewController.m in Sources */,
@@ -459,7 +453,7 @@
 				GCC_PREFIX_HEADER = "Mindmap/Mindmap-Prefix.pch";
 				INFOPLIST_FILE = "Mindmap/Mindmap-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 2;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -473,7 +467,7 @@
 				GCC_PREFIX_HEADER = "Mindmap/Mindmap-Prefix.pch";
 				INFOPLIST_FILE = "Mindmap/Mindmap-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 2;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;
@@ -551,19 +545,6 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
-
-/* Begin XCVersionGroup section */
-		3075E657184D85BE00D1AB13 /* MMCoreData.xcdatamodeld */ = {
-			isa = XCVersionGroup;
-			children = (
-				3075E658184D85BE00D1AB13 /* MMCoreData.xcdatamodel */,
-			);
-			currentVersion = 3075E658184D85BE00D1AB13 /* MMCoreData.xcdatamodel */;
-			path = MMCoreData.xcdatamodeld;
-			sourceTree = "<group>";
-			versionGroupType = wrapper.xcdatamodel;
-		};
-/* End XCVersionGroup section */
 	};
 	rootObject = 3086B5FC1840BEC0004056E8 /* Project object */;
 }

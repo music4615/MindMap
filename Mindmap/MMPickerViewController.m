@@ -30,7 +30,13 @@
             [_items addObject:@"Red"];
             [_items addObject:@"Green"];
             [_items addObject:@"Blue"];
-
+        }
+        else if( [self.type isEqualToString:@"Hidden"] )
+        {
+            [_items addObject:@"Add"];
+            [_items addObject:@"Delete"];
+            [_items addObject:@"Color"];
+            [_items addObject:@"Shape"];
         }
         
         //Make row selections persist.
@@ -38,6 +44,7 @@
         
         // 固定每個 row 的大小
         NSInteger rowsCount = [_items count];
+
         NSInteger singleRowHeight = [self.tableView.delegate tableView:self.tableView
                                                heightForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
         NSInteger totalRowsHeight = rowsCount * singleRowHeight;
@@ -56,8 +63,10 @@
         //Add a little padding to the width
         CGFloat popoverWidth = largestLabelWidth + 100;
         
+        
         //Set the property to tell the popover container how big this view will be.
         self.preferredContentSize = CGSizeMake(popoverWidth, totalRowsHeight);
+
     }
     
     return self;
@@ -100,8 +109,14 @@
     if (cell == nil) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
     }
-    
-    // Configure the cell...
+    /*
+    // config the cell
+    UIFont *itemFont = [ UIFont fontWithName:@"Arial" size: .0];
+    cell.textLabel.font  = itemFont;
+    cell.backgroundView = [[UIImageView alloc] initWithImage:[ [UIImage imageNamed:@"test.jpg"] stretchableImageWithLeftCapWidth:0.0 topCapHeight:5.0] ];
+    cell.selectedBackgroundView = [[UIImageView alloc] initWithImage:[ [UIImage imageNamed:@"test.jpg"] stretchableImageWithLeftCapWidth:0.0 topCapHeight:5.0] ];
+     */
+
     cell.textLabel.text = [_items objectAtIndex:indexPath.row];
     
     return cell;

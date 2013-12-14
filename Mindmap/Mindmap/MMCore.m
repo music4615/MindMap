@@ -26,13 +26,36 @@
     node.childEdges = [NSMutableDictionary dictionary];
     node.drawNodeDelegate = delegate;
     
+    CGSize size = CGSizeMake(100.f, 100.f);
+    UIGraphicsBeginImageContextWithOptions(size, NO, 0.f);
+    CGContextRef context = UIGraphicsGetCurrentContext();
+    UIColor *color = [[UIColor alloc] initWithRed:.5f green:.6f
+                                             blue:.7f alpha:1.f];
+    node.selectedColor = color;
+    CGContextSetFillColorWithColor(context, color.CGColor);
+    CGContextFillRect(context, (CGRect){.origin=CGPointZero, .size=size});
+    UIImage *result = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    UIImageView *nodeImageView = [[UIImageView alloc] initWithImage:result ];
+
+    nodeImageView.userInteractionEnabled = YES;
+
+    
     // set node images
+    /*
     UIImageView* nodeImageView = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"nodeImg.png"]];
     CGSize imageSize = nodeImageView.frame.size;
     
     [node setFrame:CGRectMake(point.x-imageSize.width/2.0, point.y-imageSize.height/2.0, imageSize.width, imageSize.height)];
     [node addSubview:nodeImageView];
     [node setTransform:CGAffineTransformScale(node.transform, 0.3, 0.3)];
+    */
+    CGSize imageSize = nodeImageView.frame.size;
+    
+    [node setFrame:CGRectMake(point.x-imageSize.width/2.0, point.y-imageSize.height/2.0, imageSize.width, imageSize.height)];
+    [node addSubview:nodeImageView];
+    [node setGestures];
+    
     return node;
 }
 
@@ -42,83 +65,160 @@
     node.children = [NSMutableArray array];
     node.childEdges = [NSMutableDictionary dictionary];
     node.drawNodeDelegate = parent.drawNodeDelegate;
+    node.selectedColor = parent.selectedColor;
     
+    CGSize size = CGSizeMake(100.f, 100.f);
+    UIGraphicsBeginImageContextWithOptions(size, NO, 0.f);
+    CGContextRef context = UIGraphicsGetCurrentContext();
+    //UIColor *color = [[UIColor alloc] initWithRed:.5f green:.6f
+                                             //blue:.7f alpha:1.f];
+    CGContextSetFillColorWithColor(context, node.selectedColor.CGColor);
+    CGContextFillRect(context, (CGRect){.origin=CGPointZero, .size=size});
+    UIImage *result = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    UIImageView *nodeImageView = [[UIImageView alloc] initWithImage:result ];
+    
+    nodeImageView.userInteractionEnabled = YES;
     // set node images
-    UIImageView* nodeImageView = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"nodeImg.png"]];
     CGSize imageSize = nodeImageView.frame.size;
     
     [node setFrame:CGRectMake(point.x-imageSize.width/2.0, point.y-imageSize.height/2.0, imageSize.width, imageSize.height)];
     [node addSubview:nodeImageView];
-    [node setTransform:CGAffineTransformScale(node.transform, 0.3, 0.3)];
+    
+    [node setGestures];
     
     return node;
 }
 
+-(void) setGestures {
+    UITapGestureRecognizer *tapRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(respondToTapGuesture:)];
+    tapRecognizer.numberOfTapsRequired = 1;
+    tapRecognizer.numberOfTouchesRequired = 1;
+    [self addGestureRecognizer:tapRecognizer];
+    
+    UIPanGestureRecognizer* singlePan = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(respondToSinglePan:)];
+    singlePan.minimumNumberOfTouches = singlePan.maximumNumberOfTouches = 1;
+    [self addGestureRecognizer:singlePan];
+    
+    if (self.parent) {// root doesn't move
+        UIPanGestureRecognizer* doublePan = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(respondToDoublePan:)];
+        doublePan.minimumNumberOfTouches = doublePan.maximumNumberOfTouches = 2;
+        [self addGestureRecognizer:doublePan];
+        
+        [doublePan requireGestureRecognizerToFail:tapRecognizer];
+        [singlePan requireGestureRecognizerToFail:tapRecognizer];
+    }
+    
+    //set order between guestures
+    [singlePan requireGestureRecognizerToFail:tapRecognizer];
+}
+
 -(MMNode*) addChildAtPoint:(CGPoint)point {
     MMNode* child = [MMNode initWithParent:self andPoint:point];
-    double distance = sqrt(pow(self.center.x - point.x, 2.0) + pow(self.center.y - point.y, 2.0));
-    double angle = atan2(self.center.y - point.y, self.center.x - point.x);
-    CGPoint center = CGPointMake((self.center.x+point.x)/2.0, (self.center.y+point.y)/2.0);
-    UIView* edge = [[UIView alloc] initWithFrame:CGRectMake(center.x-distance/2.0, center.y-1, distance, 2)];
-    [edge setTransform:CGAffineTransformRotate(edge.transform, angle)];
-    edge.backgroundColor = [UIColor redColor];
+    UIView* edge = nil;
+    edge = [self changeEdge:edge FromPoint:self.center toPoint:point];
     [self.childEdges setObject:edge forKey:@((size_t)(child))];
     [self.children addObject:child];
-    // add edge to child
     
     return child;
+}
+
+-(UIView*) changeEdge:(UIView*)edge FromPoint:(CGPoint)pA toPoint:(CGPoint)pB {
+    double distance = sqrt(pow(pA.x - pB.x, 2.0) + pow(pA.y - pB.y, 2.0));
+    double angle = atan2(pA.y - pB.y, pA.x - pB.x);
+    CGPoint center = CGPointMake((pA.x+pB.x)/2.0, (pA.y+pB.y)/2.0);
+    if (edge) {
+        [edge setTransform:CGAffineTransformIdentity];
+        [edge setFrame:CGRectMake(center.x-distance/2.0, center.y-1, distance, 2)];
+        [edge setTransform:CGAffineTransformRotate(CGAffineTransformIdentity, angle)];
+    }
+    else {
+        edge = [[UIView alloc] initWithFrame:CGRectMake(center.x-distance/2.0, center.y-1, distance, 2)];
+        [edge setTransform:CGAffineTransformRotate(edge.transform, angle)];
+    }
+    edge.backgroundColor = [UIColor redColor];
+
+    return edge;
 }
 
 -(void) deleteNode {
     // add children's ptrs to parent
     [self.parent.children addObjectsFromArray:(NSArray*)self.children];
-    // add parent ptr to children
+    // add parent ptr & edge to children
+    for (MMNode* child in self.children) {
+        child.parent = self.parent;
+        UIView* edge = self.childEdges[@((size_t)child)];
+        [self changeEdge:edge FromPoint:child.center toPoint:self.parent.center];
+        [self.parent.childEdges setObject:edge forKey:@((size_t)child)];
+        //[self.children removeObjectIdenticalTo:child];
+    }
     
-    // add parent edge to children
-    
+    // remove parent edge to self
+    [self.parent.childEdges[@((size_t)self)] removeFromSuperview];
+    //remove self view
+    [self removeFromSuperview];
     // remove parent's ptr to self
     [self.parent.children removeObjectIdenticalTo:self];
-    // remove parent edge to self
-    [self.childEdges[@((size_t)self)] removeFromSuperview];
     
 }
 
-#pragma touch to add node
-- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
+#pragma responds to guestures
+
+-(IBAction)respondToTapGuesture:(UITapGestureRecognizer*)recognizer {
+    [((MMGraph*)(self.superview)).selectedNode.layer setBorderColor:[UIColor clearColor].CGColor];
+    ((MMGraph*)(self.superview)).selectedNode = self;
+    //self.backgroundColor = [UIColor blueColor];
+    [self.layer setBorderColor:[UIColor purpleColor].CGColor];
+    [self.layer setBorderWidth:3.0];
+
+    [self setNeedsDisplay];
     
+    //move to center
+    
+}
+
+-(IBAction)respondToSinglePan:(UIPanGestureRecognizer*)recognizer {
+    //add new node
     // moves touched node to top layer
+    if ([recognizer state] == UIGestureRecognizerStateBegan) {
+        [[self superview] bringSubviewToFront:self];
+        [self.drawNodeDelegate setTempLineStart:self.center];
+    }
+    else if ([recognizer state] == UIGestureRecognizerStateChanged) {
+        CGPoint point = [recognizer locationInView:self.superview];
+        [self.drawNodeDelegate drawTempLineTo:point];
+    }
+    else if ([recognizer state] == UIGestureRecognizerStateEnded) {
+        
+        CGPoint point = [recognizer locationInView:self.superview];
+        
+        MMNode* child = [self addChildAtPoint:point];
+        [self.drawNodeDelegate addNode:child];
+        [self.drawNodeDelegate drawEdgeWithView:self.childEdges[@((size_t)child)]];
+    }
+    else if ([recognizer state] == UIGestureRecognizerStateFailed) {
+        //clear blue line if failed
+        [self.drawNodeDelegate addNode:nil];
+    }
+}
+
+-(IBAction)respondToDoublePan:(UIPanGestureRecognizer*)recognizer {
     [[self superview] bringSubviewToFront:self];
     
-    CGPoint point = [[touches anyObject] locationInView:self.superview];
-    location = point;
-    UIScrollView * scrollView = (UIScrollView*)self.superview.superview;
-    [scrollView setScrollEnabled:NO];
+    CGPoint location = [recognizer translationInView:self.superview];
+    CGPoint center = self.center;
+    center.x += location.x;
+    center.y += location.y;
     
-    [self.drawNodeDelegate setTempLineStart:self.center];
-    
-}
+    for (id child in self.children) {
+        UIView* edge = self.childEdges[@((size_t)(child))];
+        edge = [self changeEdge:edge FromPoint:center toPoint:((MMNode*)child).center];
+    }
+    UIView* edge = self.parent.childEdges[@((size_t)(self))];
+    edge = [self changeEdge:edge FromPoint:center toPoint:self.parent.center];
 
-- (void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event {
-    
-    CGPoint point = [[touches anyObject] locationInView:self.superview];
-    /*
-    CGRect frame = self.frame;
-    frame.origin.x += point.x - location.x;
-    frame.origin.y += point.y - location.y;
-    [self setFrame:frame];
-    */
-    [self.drawNodeDelegate drawTempLineTo:point];
-}
-
-- (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event {
-    UIScrollView * scrollView = (UIScrollView*)self.superview.superview;
-    [scrollView setScrollEnabled:YES];
-    
-    CGPoint point = [[touches anyObject] locationInView:self.superview];
-    
-    MMNode* child = [self addChildAtPoint:point];
-    [self.drawNodeDelegate addNode:child];
-    [self.drawNodeDelegate drawEdgeWithView:self.childEdges[@((size_t)child)]];
+    self.center = center;
+    [recognizer setTranslation:CGPointMake(0, 0) inView:self.superview];
 }
 
 @end
@@ -127,9 +227,9 @@
 #pragma Graph
 @interface MMGraph () {
     
-    UIBezierPath* tempLinePath;
-    UIColor* brushPattern;
-    BOOL isTempLine;
+    UIBezierPath* _tempLinePath;
+    UIColor* _brushPattern;
+    BOOL _isTempLine;
 }
 
 
@@ -141,11 +241,11 @@
     self = [super initWithCoder:aDecoder];
     if (self) {
         self.backgroundColor = [UIColor whiteColor];
-        tempLinePath = [[UIBezierPath alloc] init];
-        tempLinePath.lineWidth = 0.5;
+        _tempLinePath = [[UIBezierPath alloc] init];
+        _tempLinePath.lineWidth = 0.5;
         
-        brushPattern = [UIColor blueColor];
-        isTempLine = NO;
+        _brushPattern = [UIColor blueColor];
+        _isTempLine = NO;
     }
     return self;
 }
@@ -158,38 +258,39 @@
 
 -(void)drawRect:(CGRect)rect {
     
-    if (isTempLine) {
+    if (_isTempLine) {
         
-        [brushPattern setStroke];
-        [tempLinePath strokeWithBlendMode:kCGBlendModeNormal alpha:1.0];
-        [tempLinePath stroke];
+        [_brushPattern setStroke];
+        [_tempLinePath strokeWithBlendMode:kCGBlendModeNormal alpha:1.0];
+        [_tempLinePath stroke];
     }
-    
     
 }
 
 
 #pragma protocal functions
 -(void)addNode:(MMNode *)node {
-    [self addSubview:node];
-
+    [_tempLinePath removeAllPoints];
+    _isTempLine = NO;
+    [self setNeedsDisplay];
+    if (node)
+        [self addSubview:node];
 }
 
 -(void)setTempLineStart:(CGPoint)point {
-    [tempLinePath moveToPoint:point];
+    [_tempLinePath moveToPoint:point];
  
 }
 
 -(void)drawTempLineTo:(CGPoint)point {
-    isTempLine = YES;
-    CGPoint beginpoint = tempLinePath.currentPoint;
-    [tempLinePath removeAllPoints];
-    [tempLinePath moveToPoint:beginpoint];
-    [tempLinePath addLineToPoint:point];
+    _isTempLine = YES;
+    CGPoint beginpoint = _tempLinePath.currentPoint;
+    [_tempLinePath removeAllPoints];
+    [_tempLinePath moveToPoint:beginpoint];
+    [_tempLinePath addLineToPoint:point];
     [self setNeedsDisplay];
 
-    [tempLinePath moveToPoint:beginpoint];
-    //isTempLine = false;
+    [_tempLinePath moveToPoint:beginpoint];
     
 }
 

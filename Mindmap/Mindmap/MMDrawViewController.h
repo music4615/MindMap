@@ -8,32 +8,29 @@
 
 #import <UIKit/UIKit.h>
 #import "MMPopDrawViewController.h"
-#import "MMCore.h"
 #import "MMPickerViewController.h"
+#import "MMCore.h"
 
 @protocol SaveFileDelegateByDetail
 - (void)recieveData:(NSDictionary *)theData ;
 @end
 
 
-@interface MMDrawViewController : UIViewController<PopDrawDelegate, PickerDelegate>
-{
-    UIImageView *touching;
-    UIColor *selectedColor;
-    NSString *selectedShape; 
-    CGPoint start ;
-    NSMutableSet *touchedObjects ;
-}
+@interface MMDrawViewController : UIViewController<PopDrawDelegate,UIPopoverControllerDelegate, UIScrollViewDelegate, PickerDelegate>
+
+@property (nonatomic) NSDictionary* thisFile;
 @property (nonatomic) id<SaveFileDelegateByDetail> delegateInDraw;
+
+@property (strong, nonatomic) IBOutlet UIScrollView *mainScrollView;
+@property (strong, nonatomic) IBOutlet MMGraph *mainWorkingView;
+@property (strong, nonatomic) UIPopoverController* drawPopoverController;
+
+@property (nonatomic, strong) MMPickerViewController *hiddenMenu;
+@property (nonatomic, strong) UIPopoverController *hiddenMenuPopover;
 @property (nonatomic, strong) MMPickerViewController *shapePickerTableView;
 @property (nonatomic, strong) UIPopoverController *shapePickerPopover;
 @property (nonatomic, strong) MMPickerViewController *colorPickerTableView;
 @property (nonatomic, strong) UIPopoverController *colorPickerPopover;
-
-
-
-@property (strong, nonatomic) IBOutlet UIScrollView *mainScrollView;
-@property (strong, nonatomic) IBOutlet MMGraph *mainWorkingView;
 
 
 @end
