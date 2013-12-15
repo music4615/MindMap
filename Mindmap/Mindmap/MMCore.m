@@ -37,7 +37,8 @@
     UIImage *result = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
     UIImageView *nodeImageView = [[UIImageView alloc] initWithImage:result ];
-
+    
+    
     nodeImageView.userInteractionEnabled = YES;
 
     
@@ -56,6 +57,13 @@
     [node addSubview:nodeImageView];
     [node setGestures];
     
+    //text
+    node.nodeText = [[UITextField alloc] initWithFrame:node.bounds];
+    [node addSubview:node.nodeText];
+    node.nodeText.text = @"ABCDE";
+    node.nodeText.userInteractionEnabled = YES;
+    [node becomeFirstResponder];
+
     return node;
 }
 
@@ -161,6 +169,10 @@
     [self.parent.children removeObjectIdenticalTo:self];
     
 }
+                                
+-(void)addTextToNode {
+    
+}
 
 #pragma responds to guestures
 
@@ -174,7 +186,7 @@
     [self setNeedsDisplay];
     
     //move to center
-    
+
 }
 
 -(IBAction)respondToSinglePan:(UIPanGestureRecognizer*)recognizer {
@@ -298,5 +310,8 @@
     [self addSubview:edge];
     [self sendSubviewToBack:edge];
 }
+                                
+
+                            
 
 @end

@@ -20,6 +20,7 @@
 @property(weak, nonatomic) MMNode* parent;
 @property(strong, nonatomic) NSMutableArray* children;
 @property(strong, nonatomic) NSMutableDictionary* childEdges;
+@property(strong, nonatomic) UITextField* nodeText;
 @property(weak) id<MapDrawNodeDelegate> drawNodeDelegate;
 
 
@@ -27,6 +28,7 @@
 +(instancetype) initWithParent:(MMNode*)parent andPoint:(CGPoint)point;
 -(MMNode*) addChildAtPoint:(CGPoint)point;
 -(void) deleteNode;
+-(void) addTextToNode;
 
 @end
 
