@@ -28,8 +28,8 @@
     node.drawNodeDelegate = delegate;
     node.selectedShape = @"Rounded Rectangle";
     
-//    UIColor *color = [GzColors colorFromHex:@"0xFFFFB6AB"];
-    UIColor *color = [GzColors accessibilityLabelForColor:@"Black"];
+    UIColor *color = [GzColors colorFromHex:@"0xFFFFB6AB"];
+
 
     node.selectedColor = color;
     
