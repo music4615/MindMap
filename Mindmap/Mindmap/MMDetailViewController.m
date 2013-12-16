@@ -31,9 +31,6 @@
 }
 
 - (void)recieveData:(NSDictionary *)theData {
-    
-    //Do something with data here
-
     [self.delegateInDetail storeData:theData] ;
 }
 
@@ -98,8 +95,6 @@
         MMDrawViewController *draw = [segue destinationViewController];
         draw.delegateInDraw = self;
         draw.thisFile = self.itemDic ;
-        NSLog(@"%@", [self.itemDic objectForKey:@"nodeImageViews"]);
-        
     }
 }
 

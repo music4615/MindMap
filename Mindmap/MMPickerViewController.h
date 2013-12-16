@@ -10,7 +10,7 @@
 
 @protocol PickerDelegate <NSObject>
 @required
--(void)selectedItem:(UIColor *)color andShape:(NSString *)color;
+-(void)selectedItem:(NSString *)color;
 -(void)hiddenMenuReact ; 
 @end
 

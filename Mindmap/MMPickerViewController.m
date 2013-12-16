@@ -8,6 +8,7 @@
 
 #import "MMPickerViewController.h"
 
+
 @interface MMPickerViewController ()
 
 @end
@@ -24,6 +25,7 @@
         {
             [_items addObject:@"Circle"];
             [_items addObject:@"Rectangle"];
+            [_items addObject:@"Rounded Rectangle"];
         }
         else if( [self.type isEqualToString:@"Color"] )
         {
@@ -68,6 +70,7 @@
         self.preferredContentSize = CGSizeMake(popoverWidth, totalRowsHeight);
 
     }
+    
     
     return self;
 }
@@ -126,43 +129,26 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     NSString *selected = [_items objectAtIndex:indexPath.row];
-    
-    if( [self.type isEqualToString:@"Color"] )
+    if( [self.type isEqualToString:@"Shape"] )
     {
         // default color
-        UIColor *color = [UIColor orangeColor];
-        
-        //Set the color object based on the selected color name.
-        if ([selected isEqualToString:@"Red"]) {
-            color = [UIColor redColor];
-        }
-        else if ([selected isEqualToString:@"Green"]){
-            color = [UIColor greenColor];
-        }
-        else if ([selected isEqualToString:@"Blue"]) {
-            color = [UIColor blueColor];
-        }
-        //Notify the delegate if it exists.
-        if (_delegate != nil) {
-            [_delegate selectedItem:color andShape:nil];
-        }
-    }
-    else if( [self.type isEqualToString:@"Shape"] )
-    {
-        // default color
-        NSString *shape = @"Circle";
+        NSString *shape ;
         
         //Set the color object based on the selected color name.
         if ([selected isEqualToString:@"Circle"]) {
-            //shape = [UIColor redColor];
+            shape = @"Circle"; 
         }
         else if ([selected isEqualToString:@"Rectangle"]){
-            
+            shape = @"Rectangle";
+        }
+        else if( [selected isEqualToString:@"Rounded Rectangle"])
+        {
+            shape = @"Rounded Rectangle";
         }
 
         //Notify the delegate if it exists.
         if (_delegate != nil) {
-            [_delegate selectedItem:nil andShape:shape];
+            [_delegate selectedItem:shape];
         }
     }
 }

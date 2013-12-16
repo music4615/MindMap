@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
+	<false/>
+	<key>IDESourceControlProjectIdentifier</key>
+	<string>C1B8148D-351F-4B5D-BFBD-020B8AE1B3D0</string>
+	<key>IDESourceControlProjectName</key>
+	<string>Mindmap</string>
+	<key>IDESourceControlProjectOriginsDictionary</key>
+	<dict>
+		<key>D8748C07-7C0C-4A90-AC4F-639F9DB7F703</key>
+		<string>https://github.com/music4615/MindMap</string>
+	</dict>
+	<key>IDESourceControlProjectPath</key>
+	<string>Mindmap/Mindmap.xcodeproj/project.xcworkspace</string>
+	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
+	<dict>
+		<key>D8748C07-7C0C-4A90-AC4F-639F9DB7F703</key>
+		<string>../../..</string>
+	</dict>
+	<key>IDESourceControlProjectURL</key>
+	<string>https://github.com/music4615/MindMap</string>
+	<key>IDESourceControlProjectVersion</key>
+	<integer>110</integer>
+	<key>IDESourceControlProjectWCCIdentifier</key>
+	<string>D8748C07-7C0C-4A90-AC4F-639F9DB7F703</string>
+	<key>IDESourceControlProjectWCConfigurations</key>
+	<array>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>D8748C07-7C0C-4A90-AC4F-639F9DB7F703</string>
+			<key>IDESourceControlWCCName</key>
+			<string>MindMap</string>
+		</dict>
+	</array>
+</dict>
+</plist>

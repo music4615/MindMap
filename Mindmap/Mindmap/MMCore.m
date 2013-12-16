@@ -7,6 +7,7 @@
 //
 
 #import "MMCore.h"
+#import "GzColors.h"
 
 
 // NODE
@@ -25,37 +26,20 @@
     node.children = [NSMutableArray array];
     node.childEdges = [NSMutableDictionary dictionary];
     node.drawNodeDelegate = delegate;
+    node.selectedShape = @"Rounded Rectangle";
     
-    CGSize size = CGSizeMake(100.f, 100.f);
-    UIGraphicsBeginImageContextWithOptions(size, NO, 0.f);
-    CGContextRef context = UIGraphicsGetCurrentContext();
-    UIColor *color = [[UIColor alloc] initWithRed:.5f green:.6f
-                                             blue:.7f alpha:1.f];
+//    UIColor *color = [GzColors colorFromHex:@"0xFFFFB6AB"];
+    UIColor *color = [GzColors accessibilityLabelForColor:@"Black"];
+
     node.selectedColor = color;
-    CGContextSetFillColorWithColor(context, color.CGColor);
-    CGContextFillRect(context, (CGRect){.origin=CGPointZero, .size=size});
-    UIImage *result = UIGraphicsGetImageFromCurrentImageContext();
-    UIGraphicsEndImageContext();
-    UIImageView *nodeImageView = [[UIImageView alloc] initWithImage:result ];
-
-    nodeImageView.userInteractionEnabled = YES;
-
     
-    // set node images
-    /*
-    UIImageView* nodeImageView = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"nodeImg.png"]];
-    CGSize imageSize = nodeImageView.frame.size;
-    
+    CGSize imageSize = CGSizeMake(100.f, 50.f);
     [node setFrame:CGRectMake(point.x-imageSize.width/2.0, point.y-imageSize.height/2.0, imageSize.width, imageSize.height)];
-    [node addSubview:nodeImageView];
-    [node setTransform:CGAffineTransformScale(node.transform, 0.3, 0.3)];
-    */
-    CGSize imageSize = nodeImageView.frame.size;
     
-    [node setFrame:CGRectMake(point.x-imageSize.width/2.0, point.y-imageSize.height/2.0, imageSize.width, imageSize.height)];
+    UIImageView *nodeImageView = [node drawShape:node.selectedShape];
     [node addSubview:nodeImageView];
     [node setGestures];
-    
+
     return node;
 }
 
@@ -66,28 +50,100 @@
     node.childEdges = [NSMutableDictionary dictionary];
     node.drawNodeDelegate = parent.drawNodeDelegate;
     node.selectedColor = parent.selectedColor;
-    
-    CGSize size = CGSizeMake(100.f, 100.f);
-    UIGraphicsBeginImageContextWithOptions(size, NO, 0.f);
-    CGContextRef context = UIGraphicsGetCurrentContext();
-    //UIColor *color = [[UIColor alloc] initWithRed:.5f green:.6f
-                                             //blue:.7f alpha:1.f];
-    CGContextSetFillColorWithColor(context, node.selectedColor.CGColor);
-    CGContextFillRect(context, (CGRect){.origin=CGPointZero, .size=size});
-    UIImage *result = UIGraphicsGetImageFromCurrentImageContext();
-    UIGraphicsEndImageContext();
-    UIImageView *nodeImageView = [[UIImageView alloc] initWithImage:result ];
-    
-    nodeImageView.userInteractionEnabled = YES;
-    // set node images
-    CGSize imageSize = nodeImageView.frame.size;
-    
+    node.selectedShape = parent.selectedShape;
+
+    CGSize imageSize = CGSizeMake(100.f, 50.f);
     [node setFrame:CGRectMake(point.x-imageSize.width/2.0, point.y-imageSize.height/2.0, imageSize.width, imageSize.height)];
+    UIImageView *nodeImageView = [node drawShape:node.selectedShape];
+    // set node images
+
+    
+    
     [node addSubview:nodeImageView];
     
     [node setGestures];
     
     return node;
+}
+
+-(UIImageView *) drawShape:(NSString *)shape
+{
+    self.selectedShape = shape;
+    CGRect fillSize = CGRectMake(self.bounds.origin.x+3, self.bounds.origin.y+3, self.bounds.size.width-6, self.bounds.size.height-6);
+    
+    const CGFloat* colorComponents = CGColorGetComponents(self.selectedColor.CGColor);
+    float most = 0 ;
+    int pos = 0 ;
+    for(int i=0; i<3; i++)
+    {
+        if( i == 0 )
+        {
+            most = colorComponents[0];
+            pos = i ;
+            continue;
+        }
+        if( colorComponents[i] > most )
+        {
+            most = colorComponents[i];
+            pos = i ;
+        }
+    }
+    UIColor *strokeColor = [GzColors strokeColor:@"0xFFFFB6AB"];
+    /*
+    if( pos == 0 )
+    {
+        strokeColor = [GzColors colorFromHex:@"0xFFA34C27"];
+    }
+    else if( pos == 1 )
+    {
+        strokeColor = [UIColor colorWithRed:0 green:1 blue:0 alpha:1];
+//        strokeColor = [UIColor colorWithRed:0.2 green:1 blue:0.4 alpha:1];
+    }
+    else if( pos == 2 )
+    {
+        strokeColor = [UIColor colorWithRed:0 green:0 blue:1.0 alpha:1];
+    }
+    
+    */
+    
+    if( [shape isEqualToString:@"Circle"] )
+    {
+        UIGraphicsBeginImageContextWithOptions(self.frame.size, NO, 0.f);
+        CGContextRef context = UIGraphicsGetCurrentContext();
+        
+        [strokeColor setFill];
+        CGContextFillEllipseInRect(context, self.bounds);
+        [self.selectedColor setFill];
+        CGContextFillEllipseInRect(context, fillSize);
+
+    }
+    else if( [shape isEqualToString:@"Rectangle"])
+    {
+        UIGraphicsBeginImageContextWithOptions(self.frame.size, NO, 0.f);
+        CGContextRef context = UIGraphicsGetCurrentContext();
+        [strokeColor setFill];
+        CGContextFillRect(context, self.bounds);
+        [self.selectedColor setFill];
+        CGContextFillRect(context, fillSize);
+
+    }
+    else if( [shape isEqualToString:@"Rounded Rectangle"] )
+    {
+        UIGraphicsBeginImageContextWithOptions(self.frame.size, NO, 0.0f);
+        UIBezierPath *path = [UIBezierPath bezierPathWithRoundedRect:self.bounds cornerRadius:13.f];
+        [strokeColor setFill];
+        [path fill];
+        path = [UIBezierPath bezierPathWithRoundedRect:fillSize cornerRadius:13.f];
+        [self.selectedColor setFill];
+        [path fill];
+    }
+
+    UIImage *result = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    UIImageView *nodeImageView = [[UIImageView alloc] initWithImage:result];
+    
+    nodeImageView.userInteractionEnabled = YES;
+    return nodeImageView;
 }
 
 
@@ -125,6 +181,7 @@
 }
 
 -(UIView*) changeEdge:(UIView*)edge FromPoint:(CGPoint)pA toPoint:(CGPoint)pB {
+    
     double distance = sqrt(pow(pA.x - pB.x, 2.0) + pow(pA.y - pB.y, 2.0));
     double angle = atan2(pA.y - pB.y, pA.x - pB.x);
     CGPoint center = CGPointMake((pA.x+pB.x)/2.0, (pA.y+pB.y)/2.0);
@@ -140,6 +197,7 @@
     edge.backgroundColor = [UIColor redColor];
 
     return edge;
+    
 }
 
 -(void) deleteNode {
@@ -168,7 +226,6 @@
 -(IBAction)respondToTapGuesture:(UITapGestureRecognizer*)recognizer {
     [((MMGraph*)(self.superview)).selectedNode.layer setBorderColor:[UIColor clearColor].CGColor];
     ((MMGraph*)(self.superview)).selectedNode = self;
-    //self.backgroundColor = [UIColor blueColor];
     [self.layer setBorderColor:[UIColor purpleColor].CGColor];
     [self.layer setBorderWidth:3.0];
 
@@ -227,7 +284,7 @@
 
 #pragma Graph
 @interface MMGraph () {
-    
+    CGPoint beginPoint ;
     UIBezierPath* _tempLinePath;
     UIColor* _brushPattern;
     BOOL _isTempLine;
@@ -243,7 +300,7 @@
     if (self) {
         self.backgroundColor = [UIColor whiteColor];
         _tempLinePath = [[UIBezierPath alloc] init];
-        _tempLinePath.lineWidth = 0.5;
+        _tempLinePath.lineWidth = 3.0;
         
         _brushPattern = [UIColor blueColor];
         _isTempLine = NO;
@@ -279,12 +336,16 @@
 }
 
 -(void)setTempLineStart:(CGPoint)point {
+    
     [_tempLinePath moveToPoint:point];
+    beginPoint = CGPointMake(point.x, point.y);
  
 }
 
 -(void)drawTempLineTo:(CGPoint)point {
-    _isTempLine = YES;
+
+    /*
+    
     CGPoint beginpoint = _tempLinePath.currentPoint;
     [_tempLinePath removeAllPoints];
     [_tempLinePath moveToPoint:beginpoint];
@@ -293,6 +354,25 @@
 
     [_tempLinePath moveToPoint:beginpoint];
     
+    */
+    
+    [_tempLinePath removeAllPoints];
+    _isTempLine = YES;
+    CGPoint cp2 ;
+    if( point.x > 510 )
+    {
+        cp2 = CGPointMake(point.x-60, point.y+50);
+    }
+    else
+    {
+        cp2 = CGPointMake(point.x+60, point.y-50);
+    }
+        
+    [_tempLinePath moveToPoint:beginPoint];
+    [_tempLinePath addCurveToPoint:point controlPoint1:CGPointMake(beginPoint.x + 30, beginPoint.y-50) controlPoint2:cp2];
+    
+    [self setNeedsDisplay];
+
 }
 
 -(void)drawEdgeWithView:(UIView*)edge {
@@ -302,7 +382,6 @@
 
 - (void) drawFromNodes:(NSMutableArray*) nodes
 {
-    NSLog(@"test to come drawFromNodes");
     
      for (MMNode *node in nodes) {
          [self addSubview:node];

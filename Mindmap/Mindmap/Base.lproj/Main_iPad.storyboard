@@ -155,7 +155,11 @@
                                             <action selector="changeColor:" destination="r7Q-OB-0s8" id="0kp-m8-XjO"/>
                                         </connections>
                                     </barButtonItem>
-                                    <barButtonItem title="Shape" id="UIl-jE-9jm"/>
+                                    <barButtonItem title="Shape" id="UIl-jE-9jm">
+                                        <connections>
+                                            <action selector="changeShape:" destination="r7Q-OB-0s8" id="4yx-Ui-tCE"/>
+                                        </connections>
+                                    </barButtonItem>
                                     <barButtonItem title="Save" id="hzu-iv-t01">
                                         <connections>
                                             <action selector="save:" destination="r7Q-OB-0s8" id="TgJ-gX-3IB"/>
@@ -170,8 +174,11 @@
                     <nil key="simulatedTopBarMetrics"/>
                     <simulatedOrientationMetrics key="simulatedOrientationMetrics" orientation="landscapeRight"/>
                     <connections>
+                        <outlet property="colorButton" destination="rmW-q0-gDi" id="oj7-dD-VIE"/>
+                        <outlet property="colorPicker" destination="rmW-q0-gDi" id="eXo-Uq-baG"/>
                         <outlet property="mainScrollView" destination="SXj-3q-fU5" id="ebt-PF-wLb"/>
                         <outlet property="mainWorkingView" destination="XDv-sH-fj1" id="b2M-1Q-i1F"/>
+                        <outlet property="toolBar" destination="Chi-DW-qvb" id="1XN-aA-j8T"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ncT-26-Y37" userLabel="First Responder" sceneMemberID="firstResponder"/>

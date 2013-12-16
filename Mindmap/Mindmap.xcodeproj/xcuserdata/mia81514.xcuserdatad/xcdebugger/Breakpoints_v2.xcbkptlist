@@ -9,59 +9,13 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "Mindmap/MMPickerViewController.h"
-            timestampString = "407926837.602157"
+            filePath = "Mindmap/ColorPopover/Popover/WEPopoverContainerView.m"
+            timestampString = "408779804.794891"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "13"
-            endingLineNumber = "13"
-            landmarkName = "-selectedItem:andShape:"
-            landmarkType = "4">
-            <Locations>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "-[MMPickerViewController type]"
-                  moduleName = "Mindmap"
-                  urlString = "file:///Users/mia81514/Documents/senior/MobilePhone/MindMap/Mindmap/Mindmap/MMPickerViewController.h"
-                  timestampString = "408105148.021847"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "20"
-                  endingLineNumber = "20"
-                  offsetFromSymbolStart = "24">
-               </Location>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "-[MMPickerViewController setType:]"
-                  moduleName = "Mindmap"
-                  urlString = "file:///Users/mia81514/Documents/senior/MobilePhone/MindMap/Mindmap/Mindmap/MMPickerViewController.h"
-                  timestampString = "408105148.022513"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "20"
-                  endingLineNumber = "20"
-                  offsetFromSymbolStart = "31">
-               </Location>
-            </Locations>
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Mindmap/MMDrawViewController.m"
-            timestampString = "408339956.428906"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "87"
-            endingLineNumber = "87"
-            landmarkName = "-selectedItem:andShape:"
+            startingLineNumber = "142"
+            endingLineNumber = "142"
+            landmarkName = "-determineGeometryForSize:anchorRect:displayArea:permittedArrowDirections:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>

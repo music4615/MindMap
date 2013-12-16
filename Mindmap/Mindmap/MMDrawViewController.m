@@ -9,11 +9,16 @@
 #import "MMDrawViewController.h"
 
 @interface MMDrawViewController ()
+@property (weak, nonatomic) IBOutlet UIToolbar *toolBar;
+@property (weak, nonatomic) IBOutlet UIBarButtonItem *colorButton;
 
 @end
 
 @implementation MMDrawViewController
 @synthesize thisFile;
+
+
+
 # pragma pop delegate
 -(void) popover:(MMPopDrawViewController *) popView inputImage:(UIImage*) image
 {
@@ -32,6 +37,7 @@
 
 -(void) popoverControllerDidDismissPopover:(UIPopoverController *)popoverController {
     self.drawPopoverController = nil;
+    self.wePopoverController = nil;
 }
 
 - (IBAction)popoverButtonTouched:(id)sender {
@@ -60,6 +66,38 @@
         }
     }
     
+}
+
+
+#pragma mark - PickerDelegate method
+-(void)selectedItem:(NSString *)shape
+{
+    if( shape && self.mainWorkingView.selectedNode )
+    {
+
+        [self.mainWorkingView.selectedNode.layer setBorderWidth:0.0];
+
+        for (UIView* temp in [self.mainWorkingView.selectedNode subviews]) {
+            [temp removeFromSuperview];
+        }
+        MMNode *select = self.mainWorkingView.selectedNode;
+        [select addSubview:[select drawShape:shape]];
+    
+        if (_shapePickerPopover) {
+            [_shapePickerPopover dismissPopoverAnimated:YES];
+            _shapePickerPopover = nil;
+        }
+    }
+}
+
+- (IBAction)save:(id)sender {
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
+
+        // 1. refresh the file
+        self.thisFile = [self getAFile];
+        // 2. send it back adn store it
+        [self.delegateInDraw recieveData:self.thisFile] ;
+    });
 }
 - (NSDictionary*) getAFile
 {
@@ -106,9 +144,9 @@
     UIImage *thumbnailImage = [UIImage imageWithCGImage:croppedImageRef];
     UIImageView *thumbnailImageView = [[UIImageView alloc] initWithImage:thumbnailImage];
     thumbnailImageView.contentMode = UIViewContentModeScaleAspectFit ;
-        
+    
     NSMutableDictionary *newFile = [[NSMutableDictionary alloc] init];
-
+    
     [newFile addEntriesFromDictionary:self.thisFile];
     [newFile setObject:imageSubViews forKey:@"nodeImageViews"];
     [newFile setObject:thumbnailImageView forKey:@"thumbnailImageView"];
@@ -117,11 +155,107 @@
     
 }
 
-- (void) change_color:(UIImageView *)imgView andColor:(UIColor *)color
+- (IBAction)changeShape:(id)sender {
+    if (_shapePickerTableView == nil) {
+        //Create the ColorPickerViewController.
+        _shapePickerTableView = [[MMPickerViewController alloc] init];
+        _shapePickerTableView.type = @"Shape";
+        _shapePickerTableView = [_shapePickerTableView initWithStyle:UITableViewStylePlain];
+        
+        //Set this VC as the delegate.
+        _shapePickerTableView.delegate = self;
+    }
+    
+    if (_shapePickerPopover == nil) {
+        //The color picker popover is not showing. Show it.
+        _shapePickerPopover = [[UIPopoverController alloc] initWithContentViewController:_shapePickerTableView];
+        [_shapePickerPopover presentPopoverFromBarButtonItem:(UIBarButtonItem *)sender
+                                    permittedArrowDirections:UIPopoverArrowDirectionUp animated:YES];
+    }
+    else {
+        //The color picker popover is showing. Hide it.
+        [_shapePickerPopover dismissPopoverAnimated:YES];
+        _shapePickerPopover = nil;
+    }
+}
+- (UIView *)viewForBarItem:(UIBarButtonItem *)item inToolbar:(UIToolbar *)toolbar
 {
+    // NOTE: This relies on internal implementation
+    // TODO: Better implementation for iOS5+
+    
+    // Sort toolbar subviews to match order of toolbar items
+    NSArray *subviews = [toolbar.subviews sortedArrayUsingComparator:^NSComparisonResult(id view1, id view2) {
+        return [view1 frame].origin.x - [view2 frame].origin.x;
+    }];
+    
+    // NOTE: Not sure why but had to filter out UIImageView from toolbar subviews
+    NSMutableArray *mutableSubviews = [[NSMutableArray alloc] init];
+    for(UIView *subview in subviews) {
+        if(![subview isKindOfClass:[UIImageView class]]) {
+            [mutableSubviews addObject:subview];
+        }
+    }
+    
+    int itemIndex = [toolbar.items indexOfObject:item];
+    int adjustedIndex = itemIndex;
+    for(int i=0; i<itemIndex; i++) {
+        UIBarButtonItem *anItem = [toolbar.items objectAtIndex:i];
+        if(anItem.tag == -1) adjustedIndex--;
+    }
+    
+    UIView *buttonView = [mutableSubviews objectAtIndex:adjustedIndex];
+
+    return buttonView;
+}
+
+- (CGRect)rectForBarItem:(UIBarButtonItem *)item inToolbar:(UIToolbar *)toolbar
+{
+    UIView *buttonView = [self viewForBarItem:item inToolbar:toolbar];
+    CGRect rect = [buttonView convertRect:buttonView.bounds toView:self.view];
+    
+    return rect;
+}
+
+- (IBAction)changeColor:(id)sender {
+
+    if (!self.wePopoverController) {
+
+        ColorViewController *contentViewController = [[ColorViewController alloc] init];
+        contentViewController.delegate = self;
+        self.wePopoverController = [[WEPopoverController alloc] initWithContentViewController:contentViewController];
+        self.wePopoverController.delegate = self;
+        [self.wePopoverController presentPopoverFromRect:CGRectMake(130, 0, 0,0)
+                                                  inView:self.mainWorkingView
+                                permittedArrowDirections:UIPopoverArrowDirectionUp
+                                                animated:YES];
+
+        [[[self.wePopoverController contentViewController] view] setBackgroundColor:[UIColor blackColor]];
+        
+    }
+    else
+    {
+        [self.wePopoverController dismissPopoverAnimated:YES];
+        self.wePopoverController = nil;
+    }
+}
+
+-(void) colorPopoverControllerDidSelectColor:(NSString *)hexColor{
+    [self change_color:self.mainWorkingView.selectedNode andColor:[GzColors colorFromHex:hexColor]];
+
+    [self.view setNeedsDisplay];
+    [self.wePopoverController dismissPopoverAnimated:YES];
+    self.wePopoverController = nil;
+     
+}
+- (void) change_color:(MMNode *)imgView andColor:(UIColor *)color
+{
+    self.mainWorkingView.selectedNode.selectedColor = color;
     // 重新畫出一張圖，然後 把它的顏色 Blend
     UIGraphicsBeginImageContext(imgView.frame.size);
+    
+    [[imgView layer] renderInContext:UIGraphicsGetCurrentContext()];
     CGContextRef context = UIGraphicsGetCurrentContext();
+    UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
     
     [color setFill];
     
@@ -129,87 +263,22 @@
     CGContextScaleCTM(context, 1.0, -1.0);
     
     CGContextSetBlendMode(context, kCGBlendModeCopy);
-    CGRect rect = CGRectMake(0, 0, imgView.frame.size.width, imgView.frame.size.height);
-    CGContextDrawImage(context, rect, imgView.image.CGImage);
     
-    CGContextClipToMask(context, rect, imgView.image.CGImage);
+    CGRect rect = CGRectMake(0, 0, imgView.frame.size.width, imgView.frame.size.height);
+
+    CGContextDrawImage(context, rect, image.CGImage);
+    CGContextClipToMask(context, rect, image.CGImage);
     CGContextAddRect(context, rect);
     CGContextDrawPath(context,kCGPathFill);
-    UIImage *temp = UIGraphicsGetImageFromCurrentImageContext();
+    UIImage *blendResult = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
     
-    [imgView setImage:temp] ;
-}
-#pragma mark - PickerDelegate method
--(void)selectedItem:(UIColor *)color andShape:(NSString *)shape
-{
-    if( color )
-    {
-        self.mainWorkingView.selectedNode.selectedColor = color;
-        // 讓 popover 視窗 以動畫消失
-        if (_colorPickerPopover) {
-            [_colorPickerPopover dismissPopoverAnimated:YES];
-            _colorPickerPopover = nil;
-        }
-        // 改變顏色
-        if( self.mainWorkingView.selectedNode )
-        {
-            UIImageView *imgView = [self.mainWorkingView.selectedNode.subviews objectAtIndex:0];
-            [imgView setFrame:CGRectMake(0, 0, 100, 100)];
-            [self change_color:imgView andColor:color] ;
-            //[self.mainWorkingView.selectedNode setTransform:CGAffineTransformIdentity];
-            
-        }
-    }
-    /*
-    else if( shape )
-    {
-        selectedShape = shape;
-        if (_shapePickerPopover) {
-            [_shapePickerPopover dismissPopoverAnimated:YES];
-            _shapePickerPopover = nil;
-        }
-    }
-     */
-    
-}
-- (IBAction)save:(id)sender {
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
+    UIImageView *nodeImageView = [[UIImageView alloc] initWithImage:blendResult];
 
-        // 1. refresh the file
-        self.thisFile = [self getAFile];
-        // 2. send it back
-        [self.delegateInDraw recieveData:self.thisFile] ;
-        
-    });
+    [imgView addSubview:nodeImageView];
 }
 
 
-- (IBAction)changeColor:(id)sender {
-    if (_colorPickerTableView == nil) {
-        //Create the ColorPickerViewController.
-        _colorPickerTableView = [[MMPickerViewController alloc] init];
-        _colorPickerTableView.type = @"Color";
-        _colorPickerTableView = [_colorPickerTableView initWithStyle:UITableViewStylePlain];
-        
-        //Set this VC as the delegate.
-        _colorPickerTableView.delegate = self;
-    }
-    
-    if (_colorPickerPopover == nil) {
-        //The color picker popover is not showing. Show it.
-        _colorPickerPopover = [[UIPopoverController alloc] initWithContentViewController:_colorPickerTableView];
-        [_colorPickerPopover presentPopoverFromBarButtonItem:(UIBarButtonItem *)sender
-                                    permittedArrowDirections:UIPopoverArrowDirectionUp animated:YES];
-    }
-    else {
-        //The color picker popover is showing. Hide it.
-        [_colorPickerPopover dismissPopoverAnimated:YES];
-        _colorPickerPopover = nil;
-        //self.view.userInteractionEnabled = YES ;
-    }
-
-}
 
 # pragma go back to master/detail
 - (IBAction)go_back:(id)sender {
@@ -242,7 +311,6 @@
     if( [[self.thisFile objectForKey:@"nodeImageViews"] count])
     {
         NSMutableArray *temp = [self.thisFile objectForKey:@"nodeImageViews"];
-        NSLog(@"in drawFromNodes");
         [self.mainWorkingView drawFromNodes:temp];
     }
     else
@@ -276,6 +344,13 @@
         self.mainWorkingView.selectedNode = nil;
     }
 }
+
+#pragma mark Color Picker
+
+#pragma mark WEPopoverControllerDelegate implementation
+
+
+
 
 
 @end

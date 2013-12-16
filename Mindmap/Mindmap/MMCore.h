@@ -17,6 +17,7 @@
 }
 
 @property(strong, nonatomic) UIColor *selectedColor;
+@property(strong, nonatomic) NSString *selectedShape;
 @property(weak, nonatomic) MMNode* parent;
 @property(strong, nonatomic) NSMutableArray* children;
 @property(strong, nonatomic) NSMutableDictionary* childEdges;
@@ -25,6 +26,7 @@
 
 +(instancetype) initRootWithPoint:(CGPoint)point AndDelegate:(id)delegate;
 +(instancetype) initWithParent:(MMNode*)parent andPoint:(CGPoint)point;
+-(UIImageView *) drawShape: (NSString *)shape; 
 -(MMNode*) addChildAtPoint:(CGPoint)point;
 -(void) deleteNode;
 

@@ -12,7 +12,6 @@
 @class MMDetailViewController;
 
 @interface MMMasterViewController : UITableViewController<SaveFileDelegateByMaster>
-
 @property (strong, nonatomic) MMDetailViewController *detailViewController;
 
 @end
