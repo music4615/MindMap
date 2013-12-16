@@ -25,7 +25,8 @@
 }
 
 - (IBAction)cancelButtonClicked:(id)sender {
-
+    [self.popController.delegate popoverControllerShouldDismissPopover:self.popController];
+    NSLog(@"cancel");
 }
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
@@ -41,6 +42,7 @@
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
+    [self.drawView.layer setCornerRadius:32];
     
 }
 

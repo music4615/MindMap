@@ -26,12 +26,15 @@
 
 -(BOOL) popoverControllerShouldDismissPopover:(UIPopoverController *)popoverController {
     
-    
+    NSLog(@"should");
+    [self.drawPopoverController dismissPopoverAnimated:YES];
+    self.drawPopoverController = nil;
     return YES;
 }
 
 -(void) popoverControllerDidDismissPopover:(UIPopoverController *)popoverController {
     self.drawPopoverController = nil;
+    NSLog(@"did");
 }
 
 - (IBAction)popoverButtonTouched:(id)sender {
@@ -57,6 +60,7 @@
         if ([segue isKindOfClass:[UIStoryboardPopoverSegue class]]) {
             self.drawPopoverController = [(UIStoryboardPopoverSegue*)segue popoverController];
             [self.drawPopoverController setDelegate:self];
+            pop.popController = self.drawPopoverController;
         }
     }
     

@@ -15,6 +15,7 @@
 
 @property (weak) id<PopDrawDelegate> popDelegate ;
 @property (strong, nonatomic) IBOutlet MMHandDrawView *drawView;
+@property (weak, nonatomic) UIPopoverController* popController;
 
 
 @end
